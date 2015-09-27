@@ -1,4 +1,4 @@
-impls := rack sinatra
+impls := $(shell find . -maxdepth 1 -mindepth 1 -type d -printf '%f ')
 .PHONY: $(impls)
 
 define makerule =
