@@ -1,0 +1,6 @@
+#!/bin/sh
+gem list -i rack >/dev/null || gem install rack
+ruby server.rb &
+mkdir -p tmp
+echo $! > tmp/server.pid
+sleep 1
