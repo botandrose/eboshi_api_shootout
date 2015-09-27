@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/botandrose/eboshi_api_shootout.svg?branch=master)](http://travis-ci.org/botandrose/eboshi_api_shootout)
+
 EBOSHI API SHOOTOUT
 ===================
 
