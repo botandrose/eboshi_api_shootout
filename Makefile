@@ -1,12 +1,14 @@
 # otherwise make sees e.g. the directory named 'test' and thinks its done.
 .PHONY: test rack
 test:
-	bin/bats test/test.bats
+	@bin/bats test/test.bats
 
-rack: setup test teardown
 
-setup:
-	cd rack && bin/setup
+# RACK
+rack: rack_setup test rack_teardown
 
-teardown:
-	cd rack && bin/teardown
+rack_setup:
+	@cd rack && bin/setup
+
+rack_teardown:
+	@cd rack && bin/teardown
