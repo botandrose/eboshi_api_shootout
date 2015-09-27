@@ -3,7 +3,7 @@ impls := $(shell find . -maxdepth 1 -mindepth 1 ! -name 'bin' ! -name 'test' ! -
 
 all: $(impls)
 
-define makerule =
+define makerule
 $1: 
 	@echo $1:
 	@cd $1 && bin/setup; cd ..
