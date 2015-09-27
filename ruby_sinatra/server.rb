@@ -2,6 +2,6 @@ require 'sinatra'
 
 set :port, 6969
 
-get '/' do
+get '/api/test' do
   'Hello world'
 end

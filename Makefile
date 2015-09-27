@@ -1,4 +1,4 @@
-impls := $(shell find . -maxdepth 1 -mindepth 1 ! -name 'bin' ! -name 'test' ! -name '.git' -type d)
+impls := $(shell find . -maxdepth 1 -mindepth 1 ! -name 'bin' ! -name 'test' ! -name '.git' ! -name '.idea' -type d)
 .PHONY: $(impls)
 
 all: $(impls)
