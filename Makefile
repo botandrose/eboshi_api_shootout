@@ -1,14 +1,11 @@
-# otherwise make sees e.g. the directory named 'test' and thinks its done.
-.PHONY: test rack
-test:
+impls := rack sinatra
+.PHONY: $(impls)
+
+define makerule =
+$1: 
+	@cd $1 && bin/setup; cd ..
 	@bin/bats test/test.bats
+	@cd $1 && bin/teardown; cd ..
+endef
 
-
-# RACK
-rack: rack_setup test rack_teardown
-
-rack_setup:
-	@cd rack && bin/setup
-
-rack_teardown:
-	@cd rack && bin/teardown
+$(foreach _,${impls},$(eval $(call makerule,$_)))
