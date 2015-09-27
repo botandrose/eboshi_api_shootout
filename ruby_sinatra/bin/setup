@@ -1,0 +1,6 @@
+#!/bin/sh
+gem list -i sinatra >/dev/null || gem install sinatra --no-ri
+ruby server.rb >/dev/null 2>&1 &
+mkdir -p tmp
+echo $! > tmp/server.pid
+sleep 1
