@@ -1,5 +1,6 @@
 #!/bin/sh
 echo installing phoenix dependencies
+mix local.rebar >/dev/null
 mix deps.get >/dev/null
 echo running phoenix server
 mix phoenix.server >/dev/null 2>&1 &
