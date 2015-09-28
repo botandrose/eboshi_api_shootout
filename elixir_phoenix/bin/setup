@@ -6,4 +6,8 @@ echo running phoenix server
 mix phoenix.server >/dev/null 2>&1 &
 mkdir -p tmp
 echo $! > tmp/server.pid
-sleep 1
+
+until $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do
+    printf '.'
+    sleep 3
+done
