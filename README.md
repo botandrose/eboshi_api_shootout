@@ -12,5 +12,5 @@ Each implementation shares the MySQL database schema, and a language-agnostic te
 
 Each implementation lives in its own subdirectory, and must implement `bin/setup` and `bin/teardown`.
 
-* `bin/setup`: Gets the server running on port 6969. This also includes installing any dependencies, etc.
+* `bin/setup`: Gets the server running on port 6969. This also includes installing any dependencies, etc. We can assume that the language itself is installed.
 * `bin/teardown`: Shuts down the server, and cleans up any test artifacts.
