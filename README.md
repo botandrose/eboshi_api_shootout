@@ -8,7 +8,7 @@ This repo contains multiple implementations of the same API: An API for the Ebos
 Each implementation shares the MySQL database schema, and a language-agnostic test suite written in shell.
 
 * To run the tests for all implementations, run `make`.
-* To run the tests for one implementation, run `make <implementation>`, e.g. `make rack`.
+* To run the tests for one implementation, run `make <implementation>`, e.g. `make ruby_rack`.
 
 Each implementation lives in its own subdirectory, and must implement `bin/setup` and `bin/teardown`.
 
