@@ -1,11 +1,6 @@
 #!/bin/sh
-echo installing elixir and erlang
-wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo dpkg -i erlang-solutions_1.0_all.deb  >/dev/null 2>&1
-sudo apt-get update >/dev/null 2>&1
-sudo apt-get install elixir erlang >/dev/null 2>&1
-yes | mix local.hex >/dev/null 2>&1
 echo installing phoenix dependencies
-mix local.rebar >/dev/null
+mix local.hex --force >/dev/null
 mix deps.get >/dev/null
 echo running phoenix server
 mix phoenix.server >/dev/null 2>&1 &
@@ -14,5 +9,5 @@ echo $! > tmp/server.pid
 
 until $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do
     printf '.'
-    sleep 3
+    sleep 1
 done
