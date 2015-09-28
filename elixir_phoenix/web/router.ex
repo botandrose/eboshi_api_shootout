@@ -5,9 +5,9 @@ defmodule ElixirPhoenix.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", ElixirPhoenix do
+  scope "/api", ElixirPhoenix do
     pipe_through :api
 
-    get "/", RootController, :hello_world
+    get "/test", TestController, :hello_world
   end
 end

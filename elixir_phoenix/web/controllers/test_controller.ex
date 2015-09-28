@@ -1,8 +1,8 @@
-defmodule ElixirPhoenix.RootController do
+defmodule ElixirPhoenix.TestController do
   use ElixirPhoenix.Web, :controller
 
   def hello_world(conn, _params) do
     conn
-    |> text "hello world"
+    |> text "Hello world"
   end
 end
