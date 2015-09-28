@@ -9,7 +9,6 @@ use Mix.Config
 config :elixir_phoenix, ElixirPhoenix.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
-  secret_key_base: "m2AsPruWdQKv2br8rOPjH3psWy7m3Gv6dd6vzmvpapyR2Jj5PeP2NBU7/BnXQHKB",
   render_errors: [accepts: ~w(html json)],
   pubsub: [name: ElixirPhoenix.PubSub,
            adapter: Phoenix.PubSub.PG2]
