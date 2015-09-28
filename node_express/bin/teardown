@@ -1,0 +1,6 @@
+#!/bin/sh
+
+kill `cat tmp/server.pid` >/dev/null 2>&1
+wait `cat tmp/server.pid`
+rm -f tmp/server.pid
+rm -rf node_modules
