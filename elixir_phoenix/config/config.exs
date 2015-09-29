@@ -5,6 +5,14 @@
 # is restricted to this project.
 use Mix.Config
 
+config :eboshi_api_shootout_elixir_phoenix, EboshiApiShootoutElixirPhoenix.Repo,
+  adapter: Ecto.Adapters.MySQL,
+  database: "eboshi_api_shootout",
+  username: "test",
+  password: "",
+  hostname: "localhost"
+
+
 # Configures the endpoint
 config :elixir_phoenix, ElixirPhoenix.Endpoint,
   url: [host: "localhost"],
