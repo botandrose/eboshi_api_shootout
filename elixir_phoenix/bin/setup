@@ -4,10 +4,4 @@ mix local.hex --force >/dev/null
 mix deps.get >/dev/null
 echo running phoenix server
 mix phoenix.server >/dev/null 2>&1 &
-mkdir -p tmp
-echo $! > tmp/server.pid
-
-until $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do
-    printf '.'
-    sleep 1
-done
+. $(dirname "$0")/../../bin/server_setup
