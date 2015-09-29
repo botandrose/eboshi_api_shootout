@@ -1,4 +1,5 @@
 require "net/http"
+require "json"
 require_relative "./db"
 
 $db = DB.new

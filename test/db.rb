@@ -1,5 +1,3 @@
-require "json"
-
 class DB
   def initialize
     bootstrap
