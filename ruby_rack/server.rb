@@ -43,8 +43,9 @@ class App
     def db
       @db ||= Mysql2::Client.new({
         host: "localhost",
-        username: "root",
-        database: "eboshi_test",
+        username: ENV["EBOSHI_API_SHOOTOUT_MYSQL_USERNAME"] || "root",
+        password: ENV["EBOSHI_API_SHOOTOUT_MYSQL_PASSWORD"] || "",
+        database: ENV["EBOSHI_API_SHOOTOUT_MYSQL_DATABASE"] || "eboshi_test",
         database_timezone: :utc,
       })
     end

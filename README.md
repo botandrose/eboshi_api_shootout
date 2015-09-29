@@ -14,3 +14,10 @@ Each implementation lives in its own subdirectory, and must implement `bin/setup
 
 * `bin/setup`: Gets the server running on port 6969. This also includes installing any dependencies, etc. We can assume that the language itself is installed.
 * `bin/teardown`: Shuts down the server, and cleans up any test artifacts.
+
+Some environment variables if you want to customize the access configuration:
+
+* `EBOSHI_API_SHOOTOUT_MYSQL_USERNAME` _default: 'root'_
+* `EBOSHI_API_SHOOTOUT_MYSQL_PASSWORD` _default: none_
+* `EBOSHI_API_SHOOTOUT_MYSQL_DATABASE` _default: eboshi_test_
+

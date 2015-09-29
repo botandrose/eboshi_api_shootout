@@ -2,18 +2,22 @@ var mysql = require('mysql');
 
 module.exports = {
     bootstrap: function(done) {
+        var username = process.env['EBOSHI_API_SHOOTOUT_MYSQL_USERNAME'] || 'root';
+        var password = process.env['EBOSHI_API_SHOOTOUT_MYSQL_PASSWORD'] || '';
+        var database = process.env['EBOSHI_API_SHOOTOUT_MYSQL_DATABASE'] || 'eboshi_test';
+
         this.connection = mysql.createConnection({
             host: 'localhost',
-            user: 'root',
-            password: '',
+            user: username,
+            password: password,
         });
 
         var self = this;
 
-        this.query("CREATE DATABASE IF NOT EXISTS `eboshi_test`;", function(err) {
+        this.query("CREATE DATABASE IF NOT EXISTS `" + database + "`;", function(err) {
             if(err) throw err;
 
-            self.query("USE `eboshi_test`;", function(err) {
+            self.query("USE `" + database + "`;", function(err) {
                 if(err) throw err;
 
                 self.query("DROP TABLE IF EXISTS `clients`;", function(err) {
