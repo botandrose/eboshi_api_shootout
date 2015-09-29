@@ -1,7 +1,7 @@
 {
   "name": "node_express",
   "version": "1.0.0",
-  "description": "",
+  "description": "A node express contender for the eboshi api shootout",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,5 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.13.3"
-  }
+  },
+  "repository": "https://github.com/botandrose/eboshi_api_shootout",
+  "readme": "../README.md"
 }
