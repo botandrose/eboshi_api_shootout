@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+setup() {
+  echo $1:
+  cd $1 && bin/setup && cd ..
+}
+
+test() {
+  cd test && npm install && cd ..
+  bin/mocha
+}
+
+teardown() {
+  cd $1 && bin/teardown && cd ..
+  echo ""
+}
+
+setup $1 && test && teardown $1
