@@ -1,7 +1,7 @@
 {
   "name": "test",
   "version": "1.0.0",
-  "description": "",
+  "description": "Test suite for the eboshi_api_shootout",
   "main": "test.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,5 +11,7 @@
   "devDependencies": {
     "mocha": "^2.3.3",
     "supertest": "^1.1.0"
-  }
+  },
+  "repository": "https://github.com/botandrose/eboshi_api_shootout",
+  "readme": "../README.md"
 }
