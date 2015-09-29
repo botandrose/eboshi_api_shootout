@@ -5,12 +5,7 @@ all: $(impls)
 
 define makerule
 $1:
-	@echo $1:
-	@cd test && npm install
-	@cd $1 && bin/setup
-	@bin/mocha
-	@cd $1 && bin/teardown
-	@echo ""
+	@bin/test $1
 endef
 
 $(foreach _,${impls},$(eval $(call makerule,$_)))
