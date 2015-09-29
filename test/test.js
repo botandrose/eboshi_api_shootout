@@ -14,13 +14,22 @@ var connection = mysql.createConnection({
 });
 connection.connect();
 
+describe.skipIfImpl = function(impls, title, fn) {
+  var currentImpl = process.env["EBOSHI_API_SHOOTOUT_CURRENT_IMPL"];
+  if(impls.indexOf(currentImpl) !== -1) {
+      return this.skip(title, fn);
+  } else {
+      return this(title, fn);
+  };
+};
+
 describe('/api/test', function() {
     it('returns "Hello world"', function (done) {
         request('/api/test').expect('Hello world', done);
     });
 });
 
-describe('/api/clients', function() {
+describe.skipIfImpl(['./elixir_phoenix', './node_express', './ruby_rack', './ruby_sinatra'], '/api/clients', function() {
     before(function(done) {
         connection.query("CREATE DATABASE IF NOT EXISTS `eboshi_test`;", function() {
             connection.database = 'eboshi_test';
