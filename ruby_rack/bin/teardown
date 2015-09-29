@@ -1,5 +1,1 @@
-#!/bin/sh
-
-kill -INT `cat tmp/server.pid` >/dev/null
-while $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do sleep 1; done
-rm -f tmp/server.pid
+../../bin/server_shutdown
