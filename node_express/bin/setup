@@ -1,8 +1,4 @@
 #!/bin/sh
 npm install
 node server.js >/dev/null 2>&1 &
-mkdir -p tmp
-echo $! > tmp/server.pid
-until $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do
-  sleep 1
-done
+. $(dirname "$0")/../../bin/server_setup
