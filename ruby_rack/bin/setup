@@ -1,4 +1,4 @@
 #!/bin/sh
-gem list -i rack >/dev/null || gem install rack --no-ri --no-rdoc
+gem list -i rack >/dev/null || gem install rack json mysql2 --no-ri --no-rdoc
 ruby server.rb >/dev/null 2>&1 &
 . $(dirname "$0")/../../bin/server_setup

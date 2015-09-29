@@ -22,7 +22,7 @@ describe('/api/test', function() {
     });
 });
 
-describe.skipIfImpl(['./elixir_phoenix', './node_express', './ruby_rack', './ruby_sinatra'], '/api/clients', function() {
+describe.skipIfImpl(['./elixir_phoenix', './node_express', './ruby_sinatra'], '/api/clients', function() {
     before(function(done) { db.bootstrap(done); });
 
     before(function(done) {
