@@ -6,10 +6,10 @@ all: $(impls)
 define makerule
 $1:
 	@echo $1:
-	@cd test && npm install; cd ..
-	@cd $1 && bin/setup; cd ..
+	@cd test && npm install
+	@cd $1 && bin/setup
 	@bin/mocha
-	@cd $1 && bin/teardown; cd ..
+	@cd $1 && bin/teardown
 	@echo ""
 endef
 
