@@ -8,7 +8,7 @@ setup() {
 
 test() {
   cd test && npm install && cd ..
-  bin/mocha
+  EBOSHI_API_SHOOTOUT_CURRENT_IMPL=$1 bin/mocha
 }
 
 teardown() {
@@ -16,4 +16,4 @@ teardown() {
   echo ""
 }
 
-setup $1 && test && teardown $1
+setup $1 && test $1 && teardown $1
