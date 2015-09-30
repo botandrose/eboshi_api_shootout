@@ -20,5 +20,7 @@ def request url
   uri = URI("http://localhost:6969#{url}")
   response = Net::HTTP.get(uri)
   JSON.load(response)
+rescue JSON::ParserError
+  response
 end
 

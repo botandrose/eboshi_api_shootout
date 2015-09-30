@@ -2,6 +2,12 @@ require "minitest/autorun"
 require_relative "./test_helper"
 
 describe "api" do
+  describe "/api/test" do
+    it "returns 'hello world'" do
+      request("/api/test").must_equal("Hello world")
+    end
+  end
+
   describe "/api/clients" do
     skip_if_impl_in %w(./elixir_phoenix ./node_express ./ruby_sinatra)
 
