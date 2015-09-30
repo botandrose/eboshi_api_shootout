@@ -8,7 +8,7 @@ describe "api" do
     end
 
     before do
-      db.query(<<-SQL)
+      db.seed(<<-SQL)
         INSERT INTO clients SET
           name="Bot and Rose Design",
           address="625 NW Everett St",

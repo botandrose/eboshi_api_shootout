@@ -15,8 +15,17 @@ class DB
     ENV["EBOSHI_API_SHOOTOUT_MYSQL_DATABASE"] || "eboshi_test"
   end
 
+  def seed sql
+    clean
+    query sql
+  end
+
   def bootstrap
     create_database
+    clean
+  end
+
+  def clean
     schema_path = File.expand_path("../schema.sql", __FILE__)
     query(File.read(schema_path))
   end
