@@ -5,7 +5,7 @@ EBOSHI API SHOOTOUT
 
 This repo contains multiple implementations of the same API: An API for the Eboshi time tracking and invoicing system.
 
-Each implementation shares the MySQL database, and a language-agnostic test suite written in node.
+Each implementation shares the MySQL database, and a language-agnostic test suite.
 
 * To run the tests for all implementations, run `make`.
 * To run the tests for one implementation, run `make <implementation>`, e.g. `make ruby_rack`.
