@@ -10,17 +10,22 @@ defmodule ElixirPhoenix.ClientView do
   end
 
   def render("client.json", %{client: client}) do
-    %{id: client.id,
-      name: client.name,
-      address: client.address,
-      city: client.city,
-      state: client.state,
-      zip: client.zip,
-      country: client.country,
-      email: client.email,
-      contact: client.contact,
-      phone: client.phone,
-      created_at: client.created_at,
-      updated_at: client.updated_at}
+    %{
+      type: "clients",
+      id: Integer.to_string(client.id),
+      attributes: %{
+        name: client.name,
+        address: client.address,
+        city: client.city,
+        state: client.state,
+        zip: client.zip,
+        country: client.country,
+        email: client.email,
+        contact: client.contact,
+        phone: client.phone,
+        created_at: client.created_at,
+        updated_at: client.updated_at
+      }
+    }
   end
 end
