@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
 . $(dirname "$0")/../../bin/silently
-gem list -i sinatra >/dev/null || silently gem install sinatra --no-ri
+gem list -i bundler >/dev/null || silently gem install bundler
+bundle check >/dev/null || silently bundle install --path tmp/bundle
 silently ruby server.rb
