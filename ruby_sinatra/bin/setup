@@ -1,3 +1,5 @@
 #!/bin/sh
-gem list -i sinatra >/dev/null || gem install sinatra --no-ri
-ruby server.rb >/dev/null
+set -e
+. $(dirname "$0")/../../bin/silently
+gem list -i sinatra >/dev/null || silently gem install sinatra --no-ri
+silently ruby server.rb

@@ -1,6 +1,6 @@
 #!/bin/sh
-echo installing phoenix dependencies
-mix local.hex --force >/dev/null
-mix deps.get >/dev/null
-echo running phoenix server
-mix phoenix.server >/dev/null
+set -e
+. $(dirname "$0")/../../bin/silently
+silently mix local.hex --force
+silently mix deps.get
+silently mix phoenix.server

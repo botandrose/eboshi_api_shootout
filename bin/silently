@@ -1,0 +1,12 @@
+SILENT_LOG=/tmp/silent_log_$$.txt
+
+report_and_exit() {
+  cat "${SILENT_LOG}";
+  exit 1;
+}
+
+silently() {
+  rm -f $SILENT_LOG
+  $* 2>>"${SILENT_LOG}" >> "${SILENT_LOG}" || report_and_exit;
+}
+

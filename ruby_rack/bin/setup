@@ -1,4 +1,6 @@
 #!/bin/sh
-gem list -i bundler >/dev/null || gem install bundler
-bundle check >/dev/null || bundle install --path tmp/bundle
-ruby server.rb >/dev/null
+set -e
+. $(dirname "$0")/../../bin/silently
+gem list -i bundler >/dev/null || silently gem install bundler
+bundle check >/dev/null || silently bundle install --path tmp/bundle
+silently ruby server.rb
