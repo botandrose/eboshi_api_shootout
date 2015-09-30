@@ -1,9 +1,8 @@
 #!/bin/sh
-set -e
-
 setup() {
   echo $1:
   cd $1
+  $(kill_server)
   bin/setup &
   cd ..
   until $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do sleep 1; done
@@ -14,9 +13,17 @@ test() {
 }
 
 teardown() {
-  kill -INT `lsof -i TCP:6969 | grep LISTEN | awk '{print $2}' | head -n1`
+  $(kill_server)
   while $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do sleep 1; done
   echo ""
+}
+
+kill_server() {
+  [ ! -z $(server_pid) ] && kill -INT $(server_pid)
+}
+
+server_pid() {
+  lsof -i TCP:6969 | grep LISTEN | awk '{print $2}' | head -n1
 }
 
 setup $1 && test $1
