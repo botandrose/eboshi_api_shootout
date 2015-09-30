@@ -3,7 +3,7 @@ require "json"
 require_relative "./db"
 
 def db
-  $db ||= DB.new
+  $db ||= DB.new.tap(&:bootstrap)
 end
 
 def skip_if_impl_in impls
