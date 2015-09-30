@@ -1,4 +1,5 @@
 #!/bin/sh
-gem list -i rack >/dev/null || gem install rack json mysql2 --no-ri --no-rdoc
-ruby server.rb >/dev/null 2>&1 &
+gem list -i bundler >/dev/null || gem install bundler
+bundle check >dev/null || bundle install --path tmp/bundle
+ruby server.rb >/dev/null &
 . $(dirname "$0")/../../bin/server_setup
