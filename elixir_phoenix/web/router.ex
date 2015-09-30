@@ -9,5 +9,6 @@ defmodule ElixirPhoenix.Router do
     pipe_through :api
 
     get "/test", TestController, :hello_world
+    resources "/clients", ClientController, except: [:new, :edit]
   end
 end
