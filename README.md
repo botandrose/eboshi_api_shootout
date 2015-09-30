@@ -13,11 +13,9 @@ Each implementation shares the MySQL database, and a language-agnostic test suit
 Implementation requirements
 ---------------------------
 
-Each implementation lives in its own subdirectory, and must implement `bin/setup` and `bin/teardown`.
+Each implementation lives in its own subdirectory, and has the following requirements:
 
-* `bin/setup`: Gets the server running on port 6969. This also includes installing any dependencies, etc. We can assume that the language itself is installed.
-* `bin/teardown`: Shuts down the server, and cleans up any test artifacts.
-
+* Must provide a `bin/setup` executable. This runs the server on port 6969 after installing any needed dependencies, etc (assume that the language itself is installed).
 * The API response must conform to the [jsonapi.org](http://jsonapi.org) standard.
 * Timestamps must be in UTC and formatted in ISO 8601.
 
