@@ -1,6 +1,8 @@
 #!/bin/sh
 setup() {
-  echo $1:
+  bold=$(tput bold)
+  normal=$(tput sgr0)
+  echo ${bold}$1:${normal}
   cd $1
   $(kill_server)
   bin/setup &
