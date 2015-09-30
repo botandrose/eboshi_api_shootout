@@ -2,7 +2,9 @@ require "net/http"
 require "json"
 require_relative "./db"
 
-$db = DB.new
+def db
+  $db ||= DB.new
+end
 
 def skip_if_impl_in impls
   skip if impls.include?(ENV["EBOSHI_API_SHOOTOUT_CURRENT_IMPL"])
