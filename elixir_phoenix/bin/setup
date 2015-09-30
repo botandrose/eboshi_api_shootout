@@ -3,5 +3,4 @@ echo installing phoenix dependencies
 mix local.hex --force >/dev/null
 mix deps.get >/dev/null
 echo running phoenix server
-mix phoenix.server >/dev/null 2>&1 &
-. $(dirname "$0")/../../bin/server_setup
+mix phoenix.server >/dev/null

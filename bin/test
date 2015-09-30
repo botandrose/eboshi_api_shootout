@@ -3,7 +3,10 @@ set -e
 
 setup() {
   echo $1:
-  cd $1 && bin/setup && cd ..
+  cd $1
+  bin/setup &
+  cd ..
+  until $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do sleep 1; done
 }
 
 test() {
@@ -11,8 +14,10 @@ test() {
 }
 
 teardown() {
-  cd $1 && bin/teardown && cd ..
+  kill -INT `lsof -i TCP:6969 | grep LISTEN | awk '{print $2}' | head -n1`
+  while $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do sleep 1; done
   echo ""
 }
 
-setup $1 && test $1 && teardown $1
+setup $1 && test $1
+teardown

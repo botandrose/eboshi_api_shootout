@@ -1,4 +1,0 @@
-#!/bin/sh
-mkdir -p tmp
-echo $! > tmp/server.pid
-until $(curl --output /dev/null --silent --head --fail http://localhost:6969/api/test); do sleep 1; done
