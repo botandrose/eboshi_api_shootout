@@ -2,13 +2,13 @@ require "minitest/autorun"
 require_relative "./test_helper"
 
 describe "api" do
-  describe "/api/test" do
+  describe "GET /api/test" do
     it "returns 'hello world'" do
-      request("/api/test").must_equal("Hello world")
+      get("/api/test").must_equal("Hello world")
     end
   end
 
-  describe "/api/clients" do
+  describe "GET /api/clients" do
     before do
       skip_if_impl_in %w(node_hapi node_express)
 
@@ -29,7 +29,7 @@ describe "api" do
     end
 
     it "returns a json list of clients" do
-      request("/api/clients").must_equal({
+      get("/api/clients").must_equal({
         "data" => [{
           "type" => "clients",
           "id" => "1",

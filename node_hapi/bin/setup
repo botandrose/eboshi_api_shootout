@@ -2,5 +2,5 @@
 set -e
 . $(dirname "$0")/../../bin/silently
 silently npm install
-silently gulp
+silently bin/gulp
 silently node ./dist/index.js

@@ -14,7 +14,7 @@ def seed sql
   db.seed sql
 end
 
-def request url
+def get url
   uri = URI("http://localhost:6969#{url}")
   response = Net::HTTP.get(uri)
   JSON.load(response)
