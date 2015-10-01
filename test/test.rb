@@ -9,7 +9,7 @@ describe "api" do
   end
 
   describe "/api/clients" do
-    skip_if_impl_in %w(node_hapi node_express ruby_sinatra)
+    skip_if_impl_in %w(node_hapi node_express)
 
     seed(<<-SQL)
       INSERT INTO clients SET
