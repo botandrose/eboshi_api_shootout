@@ -10,10 +10,6 @@ def skip_if_impl_in impls
   skip if impls.include?(ENV["EBOSHI_API_SHOOTOUT_CURRENT_IMPL"])
 end
 
-def seed sql
-  db.seed sql
-end
-
 def get url
   request :get, url
 end
@@ -32,3 +28,4 @@ def request method, url, data=nil
 rescue JSON::ParserError
   response.body
 end
+

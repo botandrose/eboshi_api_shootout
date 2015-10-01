@@ -2,6 +2,10 @@ require "minitest/autorun"
 require_relative "./test_helper"
 
 describe "api" do
+  before do
+    db.clean
+  end
+
   describe "GET /api/test" do
     it "returns 'hello world'" do
       get("/api/test").must_equal("Hello world")
@@ -12,7 +16,7 @@ describe "api" do
     before do
       skip_if_impl_in %w(node_hapi node_express)
 
-      seed(<<-SQL)
+      db.seed(<<-SQL)
         INSERT INTO clients SET
           name="Bot and Rose Design",
           address="625 NW Everett St",

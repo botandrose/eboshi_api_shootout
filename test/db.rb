@@ -9,12 +9,12 @@ class DB
     clean
   end
 
-  private
-
   def clean
     schema_path = File.expand_path("../schema.sql", __FILE__)
     query(File.read(schema_path))
   end
+
+  private
 
   def query statement
     system "mysql -u'#{username}' #{database} -e'#{statement}'"
