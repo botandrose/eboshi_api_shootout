@@ -15,10 +15,20 @@ def seed sql
 end
 
 def get url
-  uri = URI("http://localhost:6969#{url}")
-  response = Net::HTTP.get(uri)
-  JSON.load(response)
-rescue JSON::ParserError
-  response
+  request :get, url
 end
 
+def post url, data
+  request :post, url, data
+end
+
+def request method, url, data=nil
+  response = Net::HTTP.new("localhost", 6969).start do |http|
+    request = Net::HTTP.const_get(method.to_s.capitalize).new(url, initheader = {'Content-Type' =>'application/json'})
+    request.body = JSON.dump(data) if data
+    http.request(request)
+  end
+  JSON.load(response.body)
+rescue JSON::ParserError
+  response.body
+end
