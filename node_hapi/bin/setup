@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+. $(dirname "$0")/../../bin/silently
+silently npm install
+silently gulp
+silently node ./dist/index.js

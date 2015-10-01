@@ -1,0 +1,29 @@
+{
+  "name": "node_hapi",
+  "version": "1.0.0",
+  "description": "eboshi shootout in hapi",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mradamh/eboshi_api_shootout.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mradamh/eboshi_api_shootout/issues"
+  },
+  "homepage": "https://github.com/mradamh/eboshi_api_shootout",
+  "dependencies": {
+    "hapi": "^10.1.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1"
+  }
+}
