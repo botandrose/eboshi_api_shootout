@@ -7,13 +7,11 @@ def db
 end
 
 def skip_if_impl_in impls
-  before do
-    skip if impls.include?(ENV["EBOSHI_API_SHOOTOUT_CURRENT_IMPL"])
-  end
+  skip if impls.include?(ENV["EBOSHI_API_SHOOTOUT_CURRENT_IMPL"])
 end
 
 def seed sql
-  before { db.seed sql }
+  db.seed sql
 end
 
 def request url

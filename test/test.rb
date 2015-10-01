@@ -9,22 +9,24 @@ describe "api" do
   end
 
   describe "/api/clients" do
-    skip_if_impl_in %w(node_hapi node_express)
+    before do
+      skip_if_impl_in %w(node_hapi node_express)
 
-    seed(<<-SQL)
-      INSERT INTO clients SET
-        name="Bot and Rose Design",
-        address="625 NW Everett St",
-        city="Portland",
-        state="OR",
-        zip="97209",
-        country="USA",
-        email="info@botandrose.com",
-        contact="Michael Gubitosa",
-        phone="(503) 662-2712",
-        created_at="2006-06-25T14:08:31",
-        updated_at="2015-08-29T09:58:23";
-    SQL
+      seed(<<-SQL)
+        INSERT INTO clients SET
+          name="Bot and Rose Design",
+          address="625 NW Everett St",
+          city="Portland",
+          state="OR",
+          zip="97209",
+          country="USA",
+          email="info@botandrose.com",
+          contact="Michael Gubitosa",
+          phone="(503) 662-2712",
+          created_at="2006-06-25T14:08:31",
+          updated_at="2015-08-29T09:58:23";
+      SQL
+    end
 
     it "returns a json list of clients" do
       request("/api/clients").must_equal({
