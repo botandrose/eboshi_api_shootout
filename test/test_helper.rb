@@ -1,6 +1,5 @@
-require "net/http"
-require "json"
 require_relative "./db"
+require_relative "./http"
 
 def db
   $db ||= DB.new.tap(&:bootstrap)
@@ -10,15 +9,10 @@ def skip_if_impl_in impls
   skip if impls.include?(ENV["EBOSHI_API_SHOOTOUT_CURRENT_IMPL"])
 end
 
-def seed sql
-  db.seed sql
-end
-
 def get url
-  uri = URI("http://localhost:6969#{url}")
-  response = Net::HTTP.get(uri)
-  JSON.load(response)
-rescue JSON::ParserError
-  response
+  Request.get(url).body
 end
 
+def post url, data
+  Request.post(url, data).body
+end
