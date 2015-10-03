@@ -8,7 +8,7 @@ describe "auth API" do
 
   describe "POST /api/account" do
     before do
-      skip_if_impl_in %w(elixir_phoenix node_express node_hapi ruby_sinatra)
+      skip_if_impl_in %w(elixir_phoenix node_express node_hapi)
     end
 
     it "registers a new user account" do

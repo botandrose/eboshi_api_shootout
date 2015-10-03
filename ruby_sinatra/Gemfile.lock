@@ -3,6 +3,7 @@ GEM
   specs:
     byebug (6.0.2)
     json (1.8.3)
+    jwt (1.5.1)
     mysql2 (0.4.1)
     rack (1.6.4)
     rack-protection (1.5.3)
@@ -19,6 +20,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   json
+  jwt
   mysql2
   sinatra
 
