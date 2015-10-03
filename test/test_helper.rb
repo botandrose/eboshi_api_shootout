@@ -9,14 +9,14 @@ def skip_if_impl_in impls
   skip if impls.include?(ENV["EBOSHI_API_SHOOTOUT_CURRENT_IMPL"])
 end
 
-def get url
-  Request.get(url)
+def get url, headers={}
+  Request.get(url, headers)
 end
 
-def post url, data
-  Request.post(url, data)
+def post url, data, headers={}
+  Request.post(url, data, headers)
 end
 
-def delete url
-  Request.delete(url)
+def delete url, headers={}
+  Request.delete(url, headers)
 end
