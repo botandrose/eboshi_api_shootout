@@ -21,10 +21,11 @@ class Request < Struct.new(:method, :url, :data)
   end
 
   def body
-    return unless response
-    JSON.load(response.body)
-  rescue JSON::ParserError
     response.body
+  end
+
+  def json_body
+    JSON.load(response.body)
   end
 end
 

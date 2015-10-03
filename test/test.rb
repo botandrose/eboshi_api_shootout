@@ -8,7 +8,7 @@ describe "api" do
 
   describe "GET /api/test" do
     it "returns 'hello world'" do
-      get("/api/test").must_equal("Hello world")
+      get("/api/test").body.must_equal("Hello world")
     end
   end
 
@@ -33,7 +33,7 @@ describe "api" do
     end
 
     it "returns a json list of clients" do
-      get("/api/clients").must_equal({
+      get("/api/clients").json_body.must_equal({
         "data" => [{
           "type" => "clients",
           "id" => "1",
@@ -79,7 +79,7 @@ describe "api" do
           },
         }]
       })
-      response.must_equal({
+      response.json_body.must_equal({
         "data" => [{
           "type" => "clients",
           "id" => "1",

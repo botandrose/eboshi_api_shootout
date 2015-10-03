@@ -10,9 +10,9 @@ def skip_if_impl_in impls
 end
 
 def get url
-  Request.get(url).body
+  Request.get(url)
 end
 
 def post url, data
-  Request.post(url, data).body
+  Request.post(url, data)
 end
