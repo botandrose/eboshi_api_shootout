@@ -11,7 +11,7 @@ setup() {
 }
 
 test() {
-  EBOSHI_API_SHOOTOUT_CURRENT_IMPL=$1 ruby test/test.rb
+  EBOSHI_API_SHOOTOUT_CURRENT_IMPL=$1 ruby test/**/*_test.rb
 }
 
 teardown() {
