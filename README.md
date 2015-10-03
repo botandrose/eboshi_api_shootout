@@ -18,7 +18,7 @@ Each implementation lives in its own subdirectory, and has the following require
 * Must provide a `bin/setup` executable. This runs the server on port 6969 after installing any needed dependencies, etc (assume that the language itself is installed).
 * The API response must conform to the [jsonapi.org](http://jsonapi.org) standard.
 * Timestamps must be in UTC and formatted in ISO 8601.
-* Must implement the following [JSON endpoints](https://github.com/botandrose/eboshi_api_shootout/blob/master/test/test.rb).
+* Must implement the following [JSON endpoints](https://github.com/botandrose/eboshi_api_shootout/blob/master/test/api).
 
 Configuration
 -------------
