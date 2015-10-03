@@ -11,7 +11,7 @@ setup() {
 }
 
 test() {
-  EBOSHI_API_SHOOTOUT_CURRENT_IMPL=$1 ruby test/**/*_test.rb
+  echo "Dir.glob('./test/**/*_test.rb').each { |file| require file}" | EBOSHI_API_SHOOTOUT_CURRENT_IMPL=$1 ruby
 }
 
 teardown() {
