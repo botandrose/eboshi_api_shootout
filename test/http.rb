@@ -7,7 +7,7 @@ class Request < Struct.new(:method, :url, :data)
   end
 
   def self.post url, data=nil
-    new(:get, url, data).tap(&:call)
+    new(:post, url, data).tap(&:call)
   end
 
   attr_accessor :response
