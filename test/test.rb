@@ -105,4 +105,33 @@ describe "api" do
       response.code.must_equal 201
     end
   end
+
+  describe "DELETE /api/clients/:id" do
+    before do
+      skip_if_impl_in %w(elixir_phoenix node_express node_hapi ruby_sinatra)
+
+      db.seed(<<-SQL)
+        INSERT INTO clients SET
+          name="Bot and Rose Design",
+          address="625 NW Everett St",
+          city="Portland",
+          state="OR",
+          zip="97209",
+          country="USA",
+          email="info@botandrose.com",
+          contact="Michael Gubitosa",
+          phone="(503) 662-2712",
+          created_at="2006-06-25T14:08:31",
+          updated_at="2015-08-29T09:58:23";
+      SQL
+    end
+
+    it "deletes the specified client" do
+      response = delete("/api/clients/1")
+      response.code.must_equal 204
+
+      response = get("/api/clients")
+      response.json_body.must_equal({ "data" => [] })
+    end
+  end
 end

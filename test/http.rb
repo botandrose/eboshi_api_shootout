@@ -10,6 +10,10 @@ class Request < Struct.new(:method, :url, :data)
     new(:post, url, data).tap(&:call)
   end
 
+  def self.delete url
+    new(:delete, url).tap(&:call)
+  end
+
   attr_accessor :response
 
   def call

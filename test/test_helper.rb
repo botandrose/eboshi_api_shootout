@@ -16,3 +16,7 @@ end
 def post url, data
   Request.post(url, data)
 end
+
+def delete url
+  Request.delete(url)
+end
