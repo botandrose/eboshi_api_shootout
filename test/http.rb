@@ -20,6 +20,10 @@ class Request < Struct.new(:method, :url, :data)
     end
   end
 
+  def code
+    response.code.to_i
+  end
+
   def body
     response.body
   end
