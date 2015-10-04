@@ -1,5 +1,5 @@
 require_relative "./db"
-require_relative "./http"
+require_relative "./request"
 
 def db
   $db ||= DB.new.tap(&:bootstrap)
