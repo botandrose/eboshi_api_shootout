@@ -1,5 +1,4 @@
-require_relative "./db"
-require_relative "./request"
+Dir["./test/support/*.rb"].each { |file| require file }
 
 def db
   $db ||= DB.new.tap(&:bootstrap)
