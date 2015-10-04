@@ -56,7 +56,7 @@ describe "auth API" do
           title: "Invalid authentication credentials",
         }]
       })
-      response.code.must_equal 403
+      response.code.must_equal 401
 
       response = post("/api/auth", {
         data: [{
@@ -83,7 +83,7 @@ describe "auth API" do
       response.code.must_equal 200
 
       response = get("/api/greet", "Authorization" => "Bearer xyz.789")
-      response.code.must_equal 403
+      response.code.must_equal 401
       response.json_body.must_equal_json({
         errors: [{
           title: "Invalid authentication token",
