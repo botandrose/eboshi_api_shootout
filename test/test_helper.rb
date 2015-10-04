@@ -1,5 +1,4 @@
-require_relative "./db"
-require_relative "./http"
+Dir["./test/support/*.rb"].each { |file| require file }
 
 def db
   $db ||= DB.new.tap(&:bootstrap)
@@ -9,14 +8,14 @@ def skip_if_impl_in impls
   skip if impls.include?(ENV["EBOSHI_API_SHOOTOUT_CURRENT_IMPL"])
 end
 
-def get url
-  Request.get(url)
+def get *args
+  Request.get(*args)
 end
 
-def post url, data
-  Request.post(url, data)
+def post *args
+  Request.post(*args)
 end
 
-def delete url
-  Request.delete(url)
+def delete *args
+  Request.delete(*args)
 end
