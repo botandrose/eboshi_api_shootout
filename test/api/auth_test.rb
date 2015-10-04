@@ -13,12 +13,12 @@ describe "auth API" do
 
     it "registers a new user account" do
       response = post("/api/account", {
-        "data" => [{
-          "type" => "accounts",
-          "attributes" => {
-            "name" => "Micah Geisel",
-            "email" => "micah@botandrose.com",
-            "password" => "omgponies",
+        data: [{
+          type: "accounts",
+          attributes: {
+            name: "Micah Geisel",
+            email: "micah@botandrose.com",
+            password: "omgponies",
           }
         }]
       })
@@ -30,40 +30,40 @@ describe "auth API" do
       created_at.must_match /\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\Z/
       updated_at.must_match /\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\Z/
 
-      json_body.must_equal({
-        "data" => [{
-          "type" => "accounts",
-          "id" => "1",
-          "attributes" => {
-            "name" => "Micah Geisel",
-            "email" => "micah@botandrose.com",
+      json_body.must_equal_json({
+        data: [{
+          type: "accounts",
+          id: "1",
+          attributes: {
+            name: "Micah Geisel",
+            email: "micah@botandrose.com",
           },
         }]
       })
       response.code.must_equal 201
 
       response = post("/api/auth", {
-        "data" => [{
-          "type" => "auth",
-          "attributes" => {
-            "email" => "micah@botandrose.com",
-            "password" => "badpassword",
+        data: [{
+          type: "auth",
+          attributes: {
+            email: "micah@botandrose.com",
+            password: "badpassword",
           },
         }]
       })
-      response.json_body.must_equal({
-        "errors" => [{
-          "title" => "Invalid authentication credentials",
+      response.json_body.must_equal_json({
+        errors: [{
+          title: "Invalid authentication credentials",
         }]
       })
       response.code.must_equal 403
 
       response = post("/api/auth", {
-        "data" => [{
-          "type" => "auth",
-          "attributes" => {
-            "email" => "micah@botandrose.com",
-            "password" => "omgponies",
+        data: [{
+          type: "auth",
+          attributes: {
+            email: "micah@botandrose.com",
+            password: "omgponies",
           },
         }]
       })
@@ -72,11 +72,11 @@ describe "auth API" do
       json_body = response.json_body
       token = json_body["data"][0]["attributes"].delete("token")
       token.must_match /\A\w+\.\w+\.\w+\Z/
-      json_body.must_equal({
-        "data" => [{
-          "type" => "auth",
-          "attributes" => {
-            "email" => "micah@botandrose.com",
+      json_body.must_equal_json({
+        data: [{
+          type: "auth",
+          attributes: {
+            email: "micah@botandrose.com",
           },
         }]
       })
@@ -84,9 +84,9 @@ describe "auth API" do
 
       response = get("/api/greet", "Authorization" => "Bearer xyz.789")
       response.code.must_equal 403
-      response.json_body.must_equal({
-        "errors" => [{
-          "title" => "Invalid authentication token",
+      response.json_body.must_equal_json({
+        errors: [{
+          title: "Invalid authentication token",
         }]
       })
 
