@@ -1,6 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 import Web.Scotty
 import Client
+import Database.MySQL.Simple
+import Control.Monad
+
+fetchId :: IO String
+fetchId = do
+  conn <- connect defaultConnectInfo
+  results <- query_ conn "SELECT 1"
+  return $ head $ forM results $ \(id) -> (id)
+
 
 main :: IO ()
 main = scotty 6969 $ do
@@ -9,7 +18,7 @@ main = scotty 6969 $ do
 
   get "/api/clients" $ do
     json Client {
-      Client.id="1",
+      Client.id=fetchId,
       name="Bot and Rose Design",
       address="625 NW Everett St",
       city="Portland",
