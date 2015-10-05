@@ -4,15 +4,15 @@ defmodule ElixirPhoenix.ClientController do
   alias EboshiApiShootoutElixirPhoenix.Client
   alias EboshiApiShootoutElixirPhoenix.Repo
 
-  plug :scrub_params, "client" when action in [:create, :update]
+  plug :scrub_params, "data" when action in [:create, :update]
 
   def index(conn, _params) do
     clients = Repo.all(Client)
     render(conn, "index.json", clients: clients)
   end
 
-  def create(conn, %{"client" => client_params}) do
-    changeset = Client.changeset(%Client{}, client_params)
+  def create(conn, %{"data" => client_params}) do
+    changeset = Client.changeset(%Client{}, hd(client_params)["attributes"])
 
     case Repo.insert(changeset) do
       {:ok, client} ->
