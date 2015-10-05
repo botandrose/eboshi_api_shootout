@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+. $(dirname "$0")/../../bin/silently
+silently cabal update
+silently cabal install --only-dependencies
+silently runghc Server.hs

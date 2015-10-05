@@ -8,7 +8,7 @@ describe "clients resource API" do
 
   describe "GET /api/clients" do
     before do
-      skip_if_impl_in %w(node_express)
+      skip_if_impl_in %w(haskell_scotty node_express)
 
       db.seed(<<-SQL)
         INSERT INTO clients SET
@@ -53,7 +53,7 @@ describe "clients resource API" do
 
   describe "POST /api/clients" do
     before do
-      skip_if_impl_in %w(elixir_phoenix node_express node_hapi ruby_sinatra)
+      skip_if_impl_in %w(elixir_phoenix haskell_scotty node_express node_hapi ruby_sinatra)
     end
 
     it "persists the supplied json list of clients, and returns the result" do
@@ -100,7 +100,7 @@ describe "clients resource API" do
 
   describe "DELETE /api/clients/:id" do
     before do
-      skip_if_impl_in %w(elixir_phoenix node_express node_hapi ruby_sinatra)
+      skip_if_impl_in %w(elixir_phoenix haskell_scotty node_express node_hapi ruby_sinatra)
 
       db.seed(<<-SQL)
         INSERT INTO clients SET
