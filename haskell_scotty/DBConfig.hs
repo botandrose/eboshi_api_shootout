@@ -3,27 +3,29 @@
 module DBConfig (DBConfig(..), readDBConfig)
 where
 
-import Data.Aeson
-import qualified Data.ByteString.Lazy as BS
+import System.Environment
 
 data DBConfig = DBConfig {
       dbConfigUser :: String,
       dbConfigPassword :: String,
       dbConfigDatabase :: String }
 
-instance FromJSON DBConfig where
-
-  parseJSON (Object obj) = do
-      user <- obj .: "user"
-      password <- obj .: "password"
-      database <- obj .: "database"
-      return $ DBConfig user password database
-
-  parseJSON _ = fail "unexpected user record"
-
 readDBConfig :: IO DBConfig
 readDBConfig = do
-    jsonBS <- BS.readFile ".mysql-config"
-    case decode jsonBS of
-      Just cf -> return cf
-      Nothing -> fail "could not read db config"
+  userMaybe <- lookupEnv "EBOSHI_API_SHOOTOUT_MYSQL_USERNAME"
+  user <- case userMaybe of
+    Just string -> return string
+    Nothing -> return "root"
+
+  passwordMaybe <- lookupEnv "EBOSHI_API_SHOOTOUT_MYSQL_PASSWORD"
+  password <- case passwordMaybe of
+    Just string -> return string
+    Nothing -> return ""
+
+  databaseMaybe <- lookupEnv "EBOSHI_API_SHOOTOUT_MYSQL_DATABASE"
+  database <- case databaseMaybe of
+    Just string -> return string
+    Nothing -> return ""
+
+  return $ DBConfig user password database
+
