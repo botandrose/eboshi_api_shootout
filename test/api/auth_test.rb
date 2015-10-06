@@ -8,7 +8,7 @@ describe "auth API" do
 
   describe "POST /api/account, POST /api/auth, GET /api/greet" do
     before do
-      skip_if_impl_in %w(elixir_phoenix haskell_scotty node_express node_hapi ruby_sinatra)
+      skip_if_impl_in %w(elixir_phoenix haskell_scotty node_express node_hapi python_flask ruby_sinatra)
     end
 
     it "signs up for an account, logs in to receive auth token, uses auth token to verify identity" do

@@ -13,10 +13,10 @@ mysql.init_app(app)
 
 @app.route("/api/test")
 def hello():
-    return "Hello World!"
+    return "Hello World"
 
 @app.route('/api/clients')
-def users():
+def clients():
     cursor = mysql.connection.cursor()
     cursor.execute('''SELECT * FROM clients''')
     clients = cursor.fetchall()
