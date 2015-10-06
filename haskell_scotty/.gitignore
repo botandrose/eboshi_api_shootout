@@ -1,6 +1,5 @@
-.cabal-sandbox
-cabal.sandbox.config
-.hsenv
-dist
+/.cabal-sandbox
+/dist
 *.o
 *.hi
+/.mysql-config
