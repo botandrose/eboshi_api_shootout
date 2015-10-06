@@ -58,7 +58,7 @@ describe "clients resource API" do
 
     it "persists the supplied json list of clients, and returns the result" do
       response = post("/api/clients", {
-        data: [{
+        data: {
           type: "clients",
           attributes: {
             name: "Bot and Rose Design",
@@ -72,11 +72,11 @@ describe "clients resource API" do
             phone: "(503) 662-2712",
             created_at: "2006-06-25T14:08:31Z",
             updated_at: "2015-08-29T09:58:23Z",
-          },
-        }]
+          }
+        }
       })
       response.json_body.must_equal_json({
-        data: [{
+        data: {
           type: "clients",
           id: "1",
           attributes: {
@@ -91,8 +91,8 @@ describe "clients resource API" do
             phone: "(503) 662-2712",
             created_at: "2006-06-25T14:08:31Z",
             updated_at: "2015-08-29T09:58:23Z",
-          },
-        }]
+          }
+        }
       })
       response.code.must_equal 201
     end

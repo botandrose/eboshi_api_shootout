@@ -6,7 +6,7 @@ defmodule ElixirPhoenix.ClientView do
   end
 
   def render("show.json", %{client: client}) do
-    %{data: render_many([client], ElixirPhoenix.ClientView, "client.json")}
+    %{data: render_one(client, ElixirPhoenix.ClientView, "client.json")}
   end
 
   def render("client.json", %{client: client}) do
