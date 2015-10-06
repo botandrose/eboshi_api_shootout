@@ -1,5 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
+
 import Client
+import DBConfig
+
 import Control.Monad
 import Control.Monad.IO.Class
 import Data.Word
@@ -9,9 +12,11 @@ import Web.Scotty
 -- | Fetch a client ID from MySQL.
 fetchId :: IO Word64
 fetchId = do
+  DBConfig user pass database <- readDBConfig
   conn <- connect defaultConnectInfo {
-            connectUser = "test",
-            connectPassword = "test" }
+            connectUser = user,
+            connectPassword = pass,
+            connectDatabase = database }
   [Only result] <- query_ conn "SELECT 1"
   return result
 
