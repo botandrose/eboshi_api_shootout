@@ -12,7 +12,7 @@ defmodule ElixirPhoenix.ClientController do
   end
 
   def create(conn, %{"data" => client_params}) do
-    changeset = Client.changeset(%Client{}, hd(client_params)["attributes"])
+    changeset = Client.changeset(%Client{}, client_params["attributes"])
 
     case Repo.insert(changeset) do
       {:ok, client} ->
