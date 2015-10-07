@@ -1,24 +1,51 @@
 {-# LANGUAGE OverloadedStrings #-}
+
+import Client
+import DBConfig
+
+import Control.Monad
+import Control.Monad.IO.Class
+import Data.Word
+import Database.MySQL.Simple
 import Web.Scotty
-import Network.HTTP.Types.Status
 
--- | Build a basic test page.
-helloTestPage :: ActionM ()
-helloTestPage = html "Hello world"
+-- | Fetch a client ID from MySQL.
+fetchId :: IO Word64
+fetchId = do
+  DBConfig user pass database <- readDBConfig
+  conn <- connect defaultConnectInfo {
+            connectUser = user,
+            connectPassword = pass,
+            connectDatabase = database }
+  [Only result] <- query_ conn "SELECT 1"
+  return result
 
--- | Build a test page and do some status stuff.
-compoundTestPage :: ActionM ()
-compoundTestPage = do
-  html "You are not supposed to be here."
-  status badRequest400
+-- | Generate a simple test page.
+testPage :: ActionM ()
+testPage = html "Hello world"
 
--- | Specify the behavior of each API endpoint.
-router :: ScottyM ()
-router = do
-  get "/api/test" helloTestPage
-  get "/api/test2" compoundTestPage
+-- | Respond to an API "clients" request with JSON.
+clientsPage :: ActionM ()
+clientsPage = do
+  clientId <- liftIO fetchId
+  json Client {
+    Client.id=show clientId,
+    name="Bot and Rose Design",
+    address="625 NW Everett St",
+    city="Portland",
+    state="OR",
+    Client.zip="97209",
+    country="USA",
+    email="info@botandrose.com",
+    contact="Michael Gubitosa",
+    phone="(503) 662-2712",
+    created_at="2006-06-25T14:08:31Z",
+    updated_at="2015-08-29T09:58:23Z"
+  }
 
--- | Construct the actual webserver.
+-- | Provide the top-level API.
 main :: IO ()
-main = scotty 6969 router
+main = scotty 6969 $ do
+  get "/api/test" testPage
+  get "/api/clients" clientsPage
 
