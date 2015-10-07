@@ -7,18 +7,21 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Data.Word
 import Database.MySQL.Simple
+import Data.Time.Clock (UTCTime)
 import Web.Scotty
 
--- | Fetch a client ID from MySQL.
-fetchId :: IO Word64
-fetchId = do
+-- | Fetch a client from MySQL.
+fetchClients :: IO [Client]
+fetchClients = do
   DBConfig user pass database <- readDBConfig
   conn <- connect defaultConnectInfo {
             connectUser = user,
             connectPassword = pass,
             connectDatabase = database }
-  [Only result] <- query_ conn "SELECT 1"
-  return result
+  results <- query_ conn "SELECT id, name, address, city, state, zip, country, email, contact, phone, created_at, updated_at FROM clients LIMIT 1"
+  clients <- forM results $ \(id, name, address, city, state, zip, country, email, contact, phone, created_at, updated_at) ->
+    return $ Client (show (id :: Int)) name address city state zip country email contact phone (show (created_at :: UTCTime)) (show (updated_at :: UTCTime))
+  return clients
 
 -- | Generate a simple test page.
 testPage :: ActionM ()
@@ -27,21 +30,8 @@ testPage = html "Hello world"
 -- | Respond to an API "clients" request with JSON.
 clientsPage :: ActionM ()
 clientsPage = do
-  clientId <- liftIO fetchId
-  json Client {
-    Client.id=show clientId,
-    name="Bot and Rose Design",
-    address="625 NW Everett St",
-    city="Portland",
-    state="OR",
-    Client.zip="97209",
-    country="USA",
-    email="info@botandrose.com",
-    contact="Michael Gubitosa",
-    phone="(503) 662-2712",
-    created_at="2006-06-25T14:08:31Z",
-    updated_at="2015-08-29T09:58:23Z"
-  }
+  clients <- liftIO fetchClients
+  json $ head clients
 
 -- | Provide the top-level API.
 main :: IO ()
