@@ -1,4 +1,6 @@
-/.cabal-sandbox
-/dist
+.cabal-sandbox
+cabal.sandbox.config
+.hsenv
+dist
 *.o
 *.hi
