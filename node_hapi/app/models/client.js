@@ -17,3 +17,11 @@ export function serialize(client) {
         attributes: attributes
     };
 }
+
+// deserialize a client from json-api
+export function deserialize(client) {
+    return _.assign(client, {
+        created_at: new Date(client.created_at),
+        updated_at: new Date(client.updated_at)
+    });
+}

@@ -27,4 +27,15 @@ server.route({
     }
 });
 
+server.route({
+    method: 'POST',
+    path: '/api/clients',
+    handler: async (request, reply) => {
+        const client = Client.deserialize(request.payload.data.attributes);
+        const clientId = await knex('clients').insert(client);
+        reply({ data: Client.serialize(_.assign({}, client, { id: clientId })) })
+            .code(201);
+    }
+});
+
 server.start(() => console.log('Hapi server started'));
