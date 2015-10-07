@@ -32,8 +32,9 @@ def clients():
             else:
                 clientId = unicode(v)
 
-        attributes['created_at'] = parser.parse(attributes['created_at']).isoformat()
-        attributes['updated_at'] = parser.parse(attributes['updated_at']).isoformat()
+        # Python datetime objects don't have timezone info by default
+        attributes['created_at'] = parser.parse(attributes['created_at']).isoformat() + 'Z'
+        attributes['updated_at'] = parser.parse(attributes['updated_at']).isoformat() + 'Z'
 
         clients = {
             'type': 'clients',

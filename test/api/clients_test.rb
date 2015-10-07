@@ -42,8 +42,8 @@ describe "clients resource API" do
             email: "info@botandrose.com",
             contact: "Michael Gubitosa",
             phone: "(503) 662-2712",
-            created_at: "2006-06-25T14:08:31",
-            updated_at: "2015-08-29T09:58:23",
+            created_at: "2006-06-25T14:08:31Z",
+            updated_at: "2015-08-29T09:58:23Z",
           },
         }]
       })
