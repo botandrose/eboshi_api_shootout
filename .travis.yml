@@ -1,4 +1,5 @@
 language: elixir
+sudo: true
 install: true
 script: make
 addons:
