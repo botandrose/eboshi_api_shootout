@@ -15,7 +15,7 @@ fetchClients = do
             connectUser = user,
             connectPassword = pass,
             connectDatabase = database }
-  results <- query_ conn "SELECT id, name, address, city, state, zip, country, email, contact, phone, created_at, updated_at FROM clients LIMIT 1"
+  results <- query_ conn "SELECT * FROM clients"
   clients <- forM results $ \(id, name, address, city, state, zip, country, email, contact, phone, created_at, updated_at) ->
     return $ Client id name address city state zip country email contact phone created_at updated_at
   return clients
