@@ -2,13 +2,9 @@
 
 import Client
 import DBConfig
-
 import Control.Monad
 import Control.Monad.IO.Class
-import Data.Word
 import Database.MySQL.Simple
-import Data.Time.Clock (UTCTime)
-import Data.Time.ISO8601
 import Web.Scotty
 
 -- | Fetch a client from MySQL.
@@ -21,7 +17,7 @@ fetchClients = do
             connectDatabase = database }
   results <- query_ conn "SELECT id, name, address, city, state, zip, country, email, contact, phone, created_at, updated_at FROM clients LIMIT 1"
   clients <- forM results $ \(id, name, address, city, state, zip, country, email, contact, phone, created_at, updated_at) ->
-    return $ Client (show (id :: Int)) name address city state zip country email contact phone (formatISO8601 (created_at :: UTCTime)) (formatISO8601 (updated_at :: UTCTime))
+    return $ Client id name address city state zip country email contact phone created_at updated_at
   return clients
 
 -- | Generate a simple test page.

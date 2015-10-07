@@ -2,9 +2,11 @@
 module Client where
 
 import Data.Aeson
+import Data.Time.Clock (UTCTime)
+import Data.Time.ISO8601
 
 data Client = Client {
-  id :: String,
+  id :: Int,
   name :: String,
   address :: String,
   city :: String,
@@ -14,15 +16,15 @@ data Client = Client {
   email :: String,
   contact :: String,
   phone :: String,
-  created_at :: String,
-  updated_at :: String
+  created_at :: UTCTime,
+  updated_at :: UTCTime
 }
 
 instance ToJSON Client where
   toJSON client = object [
     "data" .= [ object [
       "type" .= ("clients" :: String),
-      "id" .= Client.id client,
+      "id" .= show (Client.id client),
       "attributes" .= object [
         "name" .= name client,
         "address" .= address client,
@@ -33,7 +35,7 @@ instance ToJSON Client where
         "email" .= email client,
         "contact" .= contact client,
         "phone" .= phone client,
-        "created_at" .= created_at client,
-        "updated_at" .= updated_at client ] ] ] ]
+        "created_at" .= formatISO8601 (created_at client),
+        "updated_at" .= formatISO8601 (updated_at client) ] ] ] ]
 
 
