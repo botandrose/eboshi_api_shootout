@@ -38,4 +38,13 @@ server.route({
     }
 });
 
+server.route({
+    method: 'DELETE',
+    path: '/api/clients/{id}',
+    handler: async (request, reply) => {
+        const rowsDeleted = await knex('clients').where('id', request.params.id).del();
+        return rowsDeleted ? reply().code(204) : reply().code(404);
+    }
+});
+
 server.start(() => console.log('Hapi server started'));

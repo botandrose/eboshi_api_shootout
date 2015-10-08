@@ -100,7 +100,7 @@ describe "clients resource API" do
 
   describe "DELETE /api/clients/:id" do
     before do
-      skip_if_impl_in %w(haskell_scotty node_express node_hapi ruby_sinatra)
+      skip_if_impl_in %w(haskell_scotty node_express ruby_sinatra)
 
       db.seed(<<-SQL)
         INSERT INTO clients SET
