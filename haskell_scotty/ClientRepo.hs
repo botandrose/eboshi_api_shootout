@@ -2,18 +2,14 @@
 module ClientRepo where
 
 import Client
-import DBConfig
+import DBConnection
 import Database.MySQL.Simple
 import Database.MySQL.Simple.Result
 import Database.MySQL.Simple.QueryResults
 
 all :: IO [Client]
 all = do
-  DBConfig user pass database <- readDBConfig
-  conn <- connect defaultConnectInfo {
-            connectUser = user,
-            connectPassword = pass,
-            connectDatabase = database }
+  conn <- DBConnection.connect
   clients <- query_ conn "SELECT * FROM clients"
   return clients
 
