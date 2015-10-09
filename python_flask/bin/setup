@@ -1,8 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 . $(dirname "$0")/../../bin/silently
-silently sudo pip install virtualenv
-virtualenv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python hello.py
+silently virtualenv venv
+. venv/bin/activate
+silently pip install -r requirements.txt
+silently python hello.py
