@@ -18,7 +18,7 @@ cabal-version:       >=1.10
 
 executable eboshi-api
   main-is:             Server.hs
-  other-modules:       Client, DBConfig
+  other-modules:       Client, DBConnection, ClientRepo, JSONAPIResponse
   -- other-extensions:    
   build-depends:       base >=4.6 && <5,
                        scotty >=0.10 && <1,
