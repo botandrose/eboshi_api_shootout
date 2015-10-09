@@ -38,4 +38,3 @@ instance ToJSON Client where
         "created_at" .= formatISO8601 (created_at client),
         "updated_at" .= formatISO8601 (updated_at client) ] ] ] ]
 
-

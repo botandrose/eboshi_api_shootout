@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Web.Scotty
-import FetchClients
+import ClientRepo
 import Control.Monad.IO.Class
 
 main :: IO ()
@@ -10,6 +10,6 @@ main = scotty 6969 $ do
     html "Hello world"
 
   get "/api/clients" $ do
-    clients <- liftIO fetchClients
+    clients <- liftIO ClientRepo.all
     json $ head clients
 
