@@ -3,6 +3,7 @@
 import Web.Scotty
 import ClientRepo
 import Control.Monad.IO.Class
+import JSONAPIResponse
 
 main :: IO ()
 main = scotty 6969 $ do
@@ -11,5 +12,5 @@ main = scotty 6969 $ do
 
   get "/api/clients" $ do
     clients <- liftIO ClientRepo.all
-    json $ head clients
+    json $ dataResponse $ clients
 
