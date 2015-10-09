@@ -3,6 +3,12 @@ from flask.ext.mysql import MySQL
 from flask import jsonify
 import dateutil.parser as parser
 
+import signal
+import sys
+def signal_handler(signal, frame):
+    sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
+
 app = Flask(__name__)
 mysql = MySQL()
 
@@ -48,3 +54,4 @@ def clients():
 if __name__ == "__main__":
     app.debug = True
     app.run(port=6969)
+
