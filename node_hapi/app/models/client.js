@@ -2,6 +2,10 @@ import * as _ from 'lodash';
 import moment from 'moment';
 import { knex } from '../cfg/knex';
 
+function rfc8601(time) {
+    return moment(time).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+}
+
 export default class Client {
     static async all() {
         const results = await knex.select().table('clients');
@@ -29,8 +33,8 @@ export default class Client {
         const attributes = _.chain(this)
             .omit('id')
             .assign({
-                created_at: moment(this.created_at).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
-                updated_at: moment(this.updated_at).utc().format('YYYY-MM-DDTHH:mm:ss[Z]')
+                created_at: rfc8601(this.created_at),
+                updated_at: rfc8601(this.updated_at)
             })
             .value();
 
