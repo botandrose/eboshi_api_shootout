@@ -40,8 +40,8 @@ server.route({
     method: 'DELETE',
     path: '/api/clients/{id}',
     handler: async (request, reply) => {
-        const rowsDeleted = await knex('clients').where('id', request.params.id).del();
-        return rowsDeleted ? reply().code(204) : reply().code(404);
+        const rowsDeleted = await Client.destroy(request.params.id);
+        rowsDeleted ? reply().code(204) : reply().code(404);
     }
 });
 

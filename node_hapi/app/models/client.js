@@ -12,6 +12,10 @@ export async function create(attributes) {
     return _.assign({}, client, { id: clientId });
 }
 
+export async function destroy(id) {
+    return await knex('clients').where('id', id).del();
+}
+
 // Serialize a client for response
 export function serialize(client) {
     const attributes = _.chain(client)
