@@ -1,5 +1,10 @@
 import * as _ from 'lodash';
 import moment from 'moment';
+import { knex } from '../cfg/knex';
+
+export async function all() {
+    return await knex.select().table('clients');
+}
 
 // Serialize a client for response
 export function serialize(client) {

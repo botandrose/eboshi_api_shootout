@@ -22,7 +22,7 @@ server.route({
     method: 'GET',
     path: '/api/clients',
     handler: async (request, reply) => {
-        const clients = await knex.select().table('clients');
+        const clients = await Client.all();
         reply({ data: _.map(clients, Client.serialize) });
     }
 });
