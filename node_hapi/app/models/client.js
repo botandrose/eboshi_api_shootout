@@ -25,19 +25,18 @@ export default class Client {
         _.assign(this, attributes);
     }
 
-    // Serialize a client for response
-    static serialize(client) {
-        const attributes = _.chain(client)
+    serialize() {
+        const attributes = _.chain(this)
             .omit('id')
             .assign({
-                created_at: moment(client.created_at).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
-                updated_at: moment(client.updated_at).utc().format('YYYY-MM-DDTHH:mm:ss[Z]')
+                created_at: moment(this.created_at).utc().format('YYYY-MM-DDTHH:mm:ss[Z]'),
+                updated_at: moment(this.updated_at).utc().format('YYYY-MM-DDTHH:mm:ss[Z]')
             })
             .value();
 
         return {
             type: 'clients',
-            id: client.id.toString(),
+            id: this.id.toString(),
             attributes: attributes
         };
     }

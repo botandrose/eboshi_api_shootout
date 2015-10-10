@@ -23,7 +23,7 @@ server.route({
     path: '/api/clients',
     handler: async (request, reply) => {
         const clients = await Client.all();
-        reply({ data: _.map(clients, Client.serialize) });
+        reply({ data: _.map(clients, (c) => c.serialize()) });
     }
 });
 
@@ -32,7 +32,7 @@ server.route({
     path: '/api/clients',
     handler: async (request, reply) => {
         const client = await Client.create(request.payload.data.attributes);
-        reply({ data: Client.serialize(client) }).code(201);
+        reply({ data: client.serialize() }).code(201);
     }
 });
 
