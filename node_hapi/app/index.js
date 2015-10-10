@@ -3,7 +3,7 @@ import * as Hapi from 'hapi';
 import * as _ from 'lodash';
 
 import { knex } from './cfg/knex';
-import * as Client from './models/client';
+import Client from './models/client';
 
 const server = new Hapi.Server();
 
