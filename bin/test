@@ -2,7 +2,7 @@
 setup() {
   print_impl $1
   cd $1
-  $(kill_server)
+  kill_server
   bin/setup &
   cd ..
   wait_for_server $!
@@ -13,8 +13,8 @@ test() {
 }
 
 teardown() {
-  $(kill_server)
-  while $(server_is_up); do sleep 1; done
+  kill_server
+  while server_is_up; do sleep 1; done
   echo ""
 }
 
@@ -37,7 +37,7 @@ server_is_up() {
 }
 
 wait_for_server() {
-  until $(server_is_up); do
+  until server_is_up; do
     # did server crash on startup?
     if ! kill -0 "$1" 2>/dev/null; then
       return 1
