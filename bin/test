@@ -1,21 +1,11 @@
 #!/bin/sh
 setup() {
-  bold=$(tput bold)
-  normal=$(tput sgr0)
-  echo ${bold}$1:${normal}
+  print_impl $1
   cd $1
   $(kill_server)
   bin/setup &
-  SERVER_PID=$!
   cd ..
-  until $(curl --output /dev/null --silent --fail http://localhost:6969/api/test); do
-    # did server crash on startup?
-    if ! kill -0 "$SERVER_PID" 2>/dev/null; then
-      return 1
-    else
-      sleep 1
-    fi
-  done
+  wait_for_server $!
 }
 
 test() {
@@ -24,8 +14,14 @@ test() {
 
 teardown() {
   $(kill_server)
-  while $(curl --output /dev/null --silent --fail http://localhost:6969/api/test); do sleep 1; done
+  while $(server_is_up); do sleep 1; done
   echo ""
+}
+
+print_impl() {
+  bold=$(tput bold)
+  normal=$(tput sgr0)
+  echo ${bold}$1:${normal}
 }
 
 kill_server() {
@@ -34,6 +30,21 @@ kill_server() {
 
 server_pid() {
   lsof -i TCP:6969 | grep LISTEN | awk '{print $2}' | head -n1
+}
+
+server_is_up() {
+  curl --output /dev/null --silent --fail http://localhost:6969/api/test
+}
+
+wait_for_server() {
+  until $(server_is_up); do
+    # did server crash on startup?
+    if ! kill -0 "$1" 2>/dev/null; then
+      return 1
+    else
+      sleep 1
+    fi
+  done
 }
 
 setup $1 && test $1
