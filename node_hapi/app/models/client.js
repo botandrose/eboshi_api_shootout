@@ -4,20 +4,25 @@ import { knex } from '../cfg/knex';
 
 export default class Client {
     static async all() {
-        return await knex.select().table('clients');
+        const results = await knex.select().table('clients');
+        return _.map(results, (attributes) => { return new Client(attributes); });
     }
 
     static async create(attributes) {
-        const client = _.assign({}, attributes, {
+        const id = await knex('clients').insert(attributes);
+        return _.assign(new Client(attributes), {
+            id: id,
             created_at: new Date(attributes.created_at),
             updated_at: new Date(attributes.updated_at)
         });
-        client.id = await knex('clients').insert(client);
-        return client;
     }
 
     static async destroy(id) {
         return await knex('clients').where('id', id).del();
+    }
+
+    constructor(attributes) {
+        _.assign(this, attributes);
     }
 
     // Serialize a client for response
