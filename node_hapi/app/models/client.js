@@ -7,9 +7,12 @@ export async function all() {
 }
 
 export async function create(attributes) {
-    const client = deserialize(attributes);
-    const clientId = await knex('clients').insert(client);
-    return _.assign({}, client, { id: clientId });
+    const client = _.assign({}, attributes, {
+        created_at: new Date(attributes.created_at),
+        updated_at: new Date(attributes.updated_at)
+    });
+    client.id = await knex('clients').insert(client);
+    return client;
 }
 
 export async function destroy(id) {
@@ -33,10 +36,3 @@ export function serialize(client) {
     };
 }
 
-// deserialize a client from json-api
-export function deserialize(client) {
-    return _.assign(client, {
-        created_at: new Date(client.created_at),
-        updated_at: new Date(client.updated_at)
-    });
-}
