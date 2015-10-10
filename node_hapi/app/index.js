@@ -2,7 +2,6 @@ import 'babel/polyfill';
 import * as Hapi from 'hapi';
 import * as _ from 'lodash';
 
-import { knex } from './cfg/knex';
 import Client from './models/client';
 
 const server = new Hapi.Server();
