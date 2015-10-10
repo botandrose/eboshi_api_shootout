@@ -6,8 +6,16 @@ setup() {
   cd $1
   $(kill_server)
   bin/setup &
+  SERVER_PID=$!
   cd ..
-  until $(curl --output /dev/null --silent --fail http://localhost:6969/api/test); do sleep 1; done
+  until $(curl --output /dev/null --silent --fail http://localhost:6969/api/test); do
+    # did server crash on startup?
+    if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+      return 1
+    else
+      sleep 1
+    fi
+  done
 }
 
 test() {
