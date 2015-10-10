@@ -6,6 +6,12 @@ export async function all() {
     return await knex.select().table('clients');
 }
 
+export async function create(attributes) {
+    const client = deserialize(attributes);
+    const clientId = await knex('clients').insert(client);
+    return _.assign({}, client, { id: clientId });
+}
+
 // Serialize a client for response
 export function serialize(client) {
     const attributes = _.chain(client)

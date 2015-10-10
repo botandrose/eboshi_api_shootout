@@ -31,10 +31,8 @@ server.route({
     method: 'POST',
     path: '/api/clients',
     handler: async (request, reply) => {
-        const client = Client.deserialize(request.payload.data.attributes);
-        const clientId = await knex('clients').insert(client);
-        reply({ data: Client.serialize(_.assign({}, client, { id: clientId })) })
-            .code(201);
+        const client = await Client.create(request.payload.data.attributes);
+        reply({ data: Client.serialize(client) }).code(201);
     }
 });
 
