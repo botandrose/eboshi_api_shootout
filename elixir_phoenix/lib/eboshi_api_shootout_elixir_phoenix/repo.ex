@@ -1,3 +1,3 @@
-defmodule EboshiApiShootoutElixirPhoenix.Repo do
-  use Ecto.Repo, otp_app: :eboshi_api_shootout_elixir_phoenix
+defmodule ElixirPhoenix.Repo do
+  use Ecto.Repo, otp_app: :elixir_phoenix
 end

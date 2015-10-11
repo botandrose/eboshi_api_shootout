@@ -5,7 +5,7 @@
 # is restricted to this project.
 use Mix.Config
 
-config :eboshi_api_shootout_elixir_phoenix, EboshiApiShootoutElixirPhoenix.Repo,
+config :elixir_phoenix, ElixirPhoenix.Repo,
   adapter: Ecto.Adapters.MySQL,
   database: "eboshi_test",
   username: "root",

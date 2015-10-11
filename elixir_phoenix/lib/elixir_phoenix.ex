@@ -9,7 +9,7 @@ defmodule ElixirPhoenix do
     children = [
       # Start the endpoint when the application starts
       supervisor(ElixirPhoenix.Endpoint, []),
-      worker(EboshiApiShootoutElixirPhoenix.Repo, []),
+      worker(ElixirPhoenix.Repo, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

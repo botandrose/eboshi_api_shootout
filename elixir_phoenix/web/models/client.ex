@@ -1,4 +1,4 @@
-defmodule EboshiApiShootoutElixirPhoenix.Client do
+defmodule ElixirPhoenix.Client do
   use Ecto.Model
 
   schema "clients" do
