@@ -1,4 +1,4 @@
-defmodule EboshiApiShootoutElixirPhoenix.Repo.Migrations.CreateClient do
+defmodule ElixirPhoenix.Repo.Migrations.CreateClient do
   use Ecto.Migration
 
   def change do

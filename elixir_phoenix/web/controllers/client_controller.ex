@@ -1,8 +1,8 @@
 defmodule ElixirPhoenix.ClientController do
   use ElixirPhoenix.Web, :controller
 
-  alias EboshiApiShootoutElixirPhoenix.Client
-  alias EboshiApiShootoutElixirPhoenix.Repo
+  alias ElixirPhoenix.Client
+  alias ElixirPhoenix.Repo
 
   plug :scrub_params, "data" when action in [:create, :update]
 
@@ -23,7 +23,7 @@ defmodule ElixirPhoenix.ClientController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(EboshiApiShootoutElixirPhoenix.ChangesetView, "error.json", changeset: changeset)
+        |> render(ElixirPhoenix.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -42,7 +42,7 @@ defmodule ElixirPhoenix.ClientController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(EboshiApiShootoutElixirPhoenix.ChangesetView, "error.json", changeset: changeset)
+        |> render(ElixirPhoenix.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
