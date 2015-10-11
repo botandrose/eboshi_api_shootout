@@ -24,5 +24,6 @@ CREATE TABLE `users` (
   `password_salt` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
