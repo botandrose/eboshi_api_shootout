@@ -4,4 +4,4 @@ set -e
 silently virtualenv venv
 . venv/bin/activate
 silently pip install -r requirements.txt
-silently python hello.py
+silently python run.py
