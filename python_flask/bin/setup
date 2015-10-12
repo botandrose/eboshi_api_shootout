@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+. $(dirname "$0")/../../bin/silently
+silently virtualenv venv
+. venv/bin/activate
+silently pip install -r requirements.txt
+silently python run.py
