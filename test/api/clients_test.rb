@@ -53,7 +53,7 @@ describe "clients resource API" do
 
   describe "POST /api/clients" do
     before do
-      skip_if_impl_in %w(haskell_scotty node_express python_flask ruby_sinatra)
+      skip_if_impl_in %w(haskell_scotty node_express ruby_sinatra)
     end
 
     it "persists the supplied json list of clients, and returns the result" do

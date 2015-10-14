@@ -28,8 +28,8 @@ class Client(db.Model):
         self.email = email
         self.contact = contact
         self.phone = phone
-        self.created_at = created_at.utcnow()
-        self.updated_at = updated_at.utcnow()
+        self.created_at = created_at[:-1] # Remove Z to make msql happy
+        self.updated_at = updated_at[:-1]
 
     def __repr__(self):
         return '<Clients %r>' % self.name
