@@ -16,20 +16,19 @@ class Client(db.Model):
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
-    def __init__(self, name, address, city, state, zip, country, email,
-        contact, phone, created_at, updated_at):
-        self.name = name
-        self.email = email
-        self.address = address
-        self.city = city
-        self.state = state
-        self.zip = zip
-        self.country = country
-        self.email = email
-        self.contact = contact
-        self.phone = phone
-        self.created_at = created_at[:-1] # Remove Z to make msql happy
-        self.updated_at = updated_at[:-1]
+    def __init__(self, attribute):
+        self.name = attribute['name']
+        self.email = attribute['email']
+        self.address = attribute['address']
+        self.city = attribute['city']
+        self.state = attribute['state']
+        self.zip = attribute['zip']
+        self.country = attribute['country']
+        self.email = attribute['email']
+        self.contact = attribute['contact']
+        self.phone = attribute['phone']
+        self.created_at = attribute['created_at'][:-1] # Remove Z to make msql happy
+        self.updated_at = attribute['updated_at'][:-1]
 
     def __repr__(self):
         return '<Clients %r>' % self.name

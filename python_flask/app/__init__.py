@@ -13,9 +13,7 @@ def hello():
 def clients():
     if request.method == 'POST':
         attributes = request.get_json(force=True)['data']['attributes']
-        new_client = Client(attributes['name'], attributes['address'], attributes['city'],
-            attributes['state'], attributes['zip'], attributes['country'], attributes['email'],
-            attributes['contact'], attributes['phone'], attributes['created_at'], attributes['updated_at'])
+        new_client = Client(attributes)
         db.session.add(new_client)
         db.session.commit()
         return jsonify(data = new_client.as_dict), 201
