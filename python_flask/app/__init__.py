@@ -21,3 +21,11 @@ def clients():
     data = Client.query.all()
     result = [d.as_dict for d in data]
     return jsonify(data = result)
+
+@app.route('/api/clients/<id>', methods = ['DELETE'])
+def delete_client(id):
+    if request.method == 'DELETE':
+        target_client = Client.query.filter_by(id = id).first()
+        db.session.delete(target_client)
+        db.session.commit()
+        return jsonify(data = []), 204
