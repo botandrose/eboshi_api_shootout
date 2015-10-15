@@ -16,19 +16,11 @@ class Client(db.Model):
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
-    def __init__(self, attribute):
-        self.name = attribute['name']
-        self.email = attribute['email']
-        self.address = attribute['address']
-        self.city = attribute['city']
-        self.state = attribute['state']
-        self.zip = attribute['zip']
-        self.country = attribute['country']
-        self.email = attribute['email']
-        self.contact = attribute['contact']
-        self.phone = attribute['phone']
-        self.created_at = attribute['created_at'][:-1] # Remove Z to make msql happy
-        self.updated_at = attribute['updated_at'][:-1]
+    def __init__(self, attributes):
+        for attr, value in attributes.iteritems():
+            setattr(self, attr, value)
+        self.created_at = self.created_at[:-1] # Remove Z to make msql happy
+        self.updated_at = self.updated_at[:-1]
 
     def __repr__(self):
         return '<Clients %r>' % self.name
