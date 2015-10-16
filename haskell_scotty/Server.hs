@@ -11,6 +11,6 @@ main = scotty 6969 $ do
     html "Hello world"
 
   get "/api/clients" $ do
-    clients <- liftIO ClientRepo.all
+    clients <- liftIO getClients
     json $ dataResponse $ clients
 

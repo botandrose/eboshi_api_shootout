@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module JSONAPIResponse where
+module JSONAPIResponse (dataResponse) where
 
 import Data.Aeson (object, (.=))
 

@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module DBConnection where
+module DBConnection (connectDB) where
 
 import Database.MySQL.Simple
 import System.Environment
@@ -24,8 +24,8 @@ lookupEnvOrDefault key defaultValue = do
     Nothing -> return defaultValue
   return value
 
-connect :: IO Connection
-connect = do
+connectDB :: IO Connection
+connectDB = do
   DBConfig user pass database <- readDBConfig
   conn <- Database.MySQL.Simple.connect defaultConnectInfo {
     connectUser = user,

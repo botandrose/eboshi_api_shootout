@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Client where
+
+module Client (Client(..)) where
 
 import Data.Aeson
 import Data.Time.Clock (UTCTime)
