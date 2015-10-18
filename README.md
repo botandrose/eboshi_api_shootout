@@ -30,3 +30,8 @@ Some environment variables if you want to customize the access configuration:
 * `EBOSHI_API_SHOOTOUT_MYSQL_USERNAME` _default: 'root'_
 * `EBOSHI_API_SHOOTOUT_MYSQL_PASSWORD` _default: none_
 * `EBOSHI_API_SHOOTOUT_MYSQL_DATABASE` _default: eboshi_test_
+
+License
+-------
+
+All code released under the [MIT License](http://www.opensource.org/licenses/MIT).
