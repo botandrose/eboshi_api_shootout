@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Client where
+
+module Client (Client(..)) where
 
 import Data.Aeson
 import Data.Time.Clock (UTCTime)
@@ -11,7 +12,7 @@ data Client = Client {
   address :: String,
   city :: String,
   state :: String,
-  zip :: String,
+  zipCode :: String,
   country :: String,
   email :: String,
   contact :: String,
@@ -29,7 +30,7 @@ instance ToJSON Client where
       "address" .= address client,
       "city" .= city client,
       "state" .= state client,
-      "zip" .= Client.zip client,
+      "zip" .= zipCode client,
       "country" .= country client,
       "email" .= email client,
       "contact" .= contact client,

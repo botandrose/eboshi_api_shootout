@@ -18,12 +18,14 @@ cabal-version:       >=1.10
 
 executable eboshi-api
   main-is:             Server.hs
-  other-modules:       Client, DBConnection, ClientRepo, JSONAPIResponse
+  other-modules:       Client, DBConnection, ClientRepo, JSONAPIResponse,
+                       ConstructResult
   -- other-extensions:    
   build-depends:       base >=4.6 && <5,
                        scotty >=0.10 && <1,
                        aeson >=0.7 && <1,
                        mysql-simple >=0.2 && <1,
+                       mysql >=0.1 && <1,
                        transformers >=0.4 && <1,
                        bytestring >=0.10 && <1,
                        iso8601-time >= 0.1 && <1,
