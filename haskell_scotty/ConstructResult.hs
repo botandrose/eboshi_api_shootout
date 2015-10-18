@@ -16,7 +16,8 @@
 -- something like
 --
 -- > instance QueryResults MyRecord where
--- >   convertResults fs vs = MyRecord $... zip fs vs
+-- >   convertResults fs vs =
+-- >       MyRecord $... constructorWrap (undefined :: MyRecord) fs vs
 --
 -- General approach is from
 -- <http://stackoverflow.com/a/2900326/364875>, but
@@ -26,11 +27,29 @@
 -- approach to tackle this specific case cleanly.
 --
 -- Arguably this module belongs in @mysql-simple@.
-module ConstructResult (ConstructorApply(..)) where
+module ConstructResult (ConstructorApply(..), constructorWrap) where
 
 import qualified Data.ByteString as BS
+import Data.Data
 import Database.MySQL.Base.Types
 import Database.MySQL.Simple.Result
+
+-- | Inspired by <http://stackoverflow.com/a/8458117/364875>.
+-- Check for database field names mismatching with constructor
+-- field names.
+--
+-- XXX This should be type-hacked to allow not requiring
+-- the stupid template value.
+constructorWrap :: (Data a, Typeable a) => a ->
+                   [Field] -> [Maybe BS.ByteString] ->
+                   [(Field, Maybe BS.ByteString)]
+constructorWrap c fs vs =
+    if and $ zipWith (==) cs $ map (show . fieldName) fs then
+        zip fs vs
+    else
+        error "DB / constructor field name mismatch"
+    where
+        cs = constrFields $ flip indexConstr 1 $ dataTypeOf c
 
 -- | Type class to allow a database row
 -- to be translated into an appropriate Haskell record
@@ -50,5 +69,6 @@ instance b ~ r => ConstructorApply b r where
 -- | This instance handles extending the partial record
 -- constructor to cover another field.
 instance (Result a, ConstructorApply f r) => ConstructorApply (a -> f) r where
-    f $... (x : xs) = (f $ uncurry convert x) $... xs
+    f $... (x : xs) =
+        (f $ uncurry convert x) $... xs
     _ $... [] = error "too few arguments"
