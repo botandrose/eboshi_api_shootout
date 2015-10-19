@@ -44,12 +44,17 @@ constructorWrap :: (Data a, Typeable a) => a ->
                    [Field] -> [Maybe BS.ByteString] ->
                    [(Field, Maybe BS.ByteString)]
 constructorWrap c fs vs =
-    if and $ zipWith (==) cs $ map (show . fieldName) fs then
-        zip fs vs
-    else
-        error "DB / constructor field name mismatch"
+    zip fs' vs
     where
-        cs = constrFields $ flip indexConstr 1 $ dataTypeOf c
+      fs' = zipWith combine cs fs
+            where
+              combine cf dbf
+                  | cf == dbfs = dbf
+                  | otherwise = error $ "constructor field name mismatch: " ++
+                                cf ++ " / " ++ dbfs
+                  where
+                    dbfs = show $ fieldName dbf
+      cs = constrFields $ flip indexConstr 1 $ dataTypeOf c
 
 -- | Type class to allow a database row
 -- to be translated into an appropriate Haskell record
