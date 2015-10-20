@@ -25,7 +25,7 @@ print_impl() {
 }
 
 kill_server() {
-  [ ! -z $(server_pid) ] && kill -INT $(server_pid) && sleep 1
+  [ ! -z $(server_pid) ] && kill $(server_pid) && sleep 1
 }
 
 server_pid() {
@@ -47,7 +47,6 @@ wait_for_server() {
   done
 }
 
-set -m
 setup $1 && test $1
 TEST_STATUS=$?
 teardown
