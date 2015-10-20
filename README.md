@@ -16,7 +16,7 @@ Implementation requirements
 Each implementation lives in its own subdirectory, and has the following requirements:
 
 * Must provide a `bin/setup` executable. This runs the server on port 6969 after installing any needed dependencies, etc (assume that the language itself is installed).
-* The server must exit after receiving the SIGINT signal (Ctrl+C).
+* The server must exit cleanly after receiving the SIGINT or SIGTERM signal.
 * The API response must conform to the [jsonapi.org](http://jsonapi.org) standard.
 * Timestamps must be in UTC and formatted in ISO 8601.
 * Authentication system must conform to the [JSON Web Token](jwt.io) standard.
