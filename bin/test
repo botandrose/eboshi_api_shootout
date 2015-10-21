@@ -49,6 +49,5 @@ wait_for_server() {
 
 setup $1 && test $1
 TEST_STATUS=$?
-echo "Test status code: $TEST_STATUS"
 teardown
 exit $TEST_STATUS
