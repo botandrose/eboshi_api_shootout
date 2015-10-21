@@ -4,7 +4,6 @@ module ClientRepo (getClients, saveClient) where
 
 import Client
 import ConstructResult
-import Data.Time.Clock (UTCTime)
 import DBConnection
 import Database.MySQL.Simple
 import Database.MySQL.Simple.QueryResults
@@ -30,19 +29,8 @@ saveClient client = do
   --         \phone=\"(503) 662-2712\", \
   --         \created_at=\"2006-06-25T14:08:31\", \
   --         \updated_at=\"2015-08-29T09:58:23\";"
-  return $ Client
-    1
-    "Bot and Rose Design"
-    "625 NW Everett St"
-    "Portland"
-    "OR"
-    "97209"
-    "USA"
-    "info@botandrose.com"
-    "Michael Gubitosa"
-    "(503) 662-2712"
-    (read("2006-06-25 14:08:31 UTC") :: UTCTime)
-    (read("2015-08-29 09:58:23 UTC") :: UTCTime)
+  --
+  return client { Client.id = (1 :: Int) }
 
 instance QueryResults Client where
   convertResults fs vs =
