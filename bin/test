@@ -25,6 +25,7 @@ print_impl() {
 }
 
 kill_server() {
+  [ ! -z $(server_pid) ] && kill -INT $(server_pid) && sleep 1
   [ ! -z $(server_pid) ] && kill $(server_pid) && sleep 1
 }
 
