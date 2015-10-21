@@ -19,6 +19,6 @@ main = scotty 6969 $ do
   post "/api/clients" $ do
     client <- jsonData
     client <- liftIO $ saveClient client
-    json $ dataResponse $ (client :: Client)
+    json $ dataResponse $ client
     status status201
 
