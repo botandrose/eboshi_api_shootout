@@ -47,7 +47,7 @@ instance FromJSON Client where
   parseJSON (Object json) = do
     let attributes = (json .: "data") >>= (.: "attributes")
     Client <$>
-      (parseJSON $ Number $ 1) <*>
+      (parseJSON $ Number $ 0) <*>
       (attributes >>= (.: "name")) <*>
       (attributes >>= (.: "address")) <*>
       (attributes >>= (.: "city")) <*>
