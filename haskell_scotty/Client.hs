@@ -45,15 +45,15 @@ instance ToJSON Client where
 
 instance FromJSON Client where
   parseJSON (Object json) = Client <$>
-                         (parseJSON $ Number $ 1) <*>
-                         parseJSON "Bot and Rose Design" <*>
-                         parseJSON "625 NW Everett St" <*>
-                         parseJSON "Portland" <*>
-                         parseJSON "OR" <*>
-                         parseJSON "97209" <*>
-                         parseJSON "USA" <*>
-                         parseJSON "info@botandrose.com" <*>
-                         parseJSON "Michael Gubitosa" <*>
-                         parseJSON "(503) 662-2712" <*>
-                         parseJSON "2006-06-25T14:08:31Z" <*>
-                         parseJSON "2015-08-29T09:58:23Z"
+    (parseJSON $ Number $ 1) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "name")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "address")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "city")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "state")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "zip")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "country")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "email")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "contact")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "phone")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "created_at")) <*>
+    ((json .: "data") >>= (.: "attributes") >>= (.: "updated_at"))
