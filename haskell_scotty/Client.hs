@@ -44,16 +44,18 @@ instance ToJSON Client where
       "updated_at" .= formatISO8601 (updated_at client) ] ]
 
 instance FromJSON Client where
-  parseJSON (Object json) = Client <$>
-    (parseJSON $ Number $ 1) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "name")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "address")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "city")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "state")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "zip")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "country")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "email")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "contact")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "phone")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "created_at")) <*>
-    ((json .: "data") >>= (.: "attributes") >>= (.: "updated_at"))
+  parseJSON (Object json) = do
+    let attributes = (json .: "data") >>= (.: "attributes")
+    Client <$>
+      (parseJSON $ Number $ 1) <*>
+      (attributes >>= (.: "name")) <*>
+      (attributes >>= (.: "address")) <*>
+      (attributes >>= (.: "city")) <*>
+      (attributes >>= (.: "state")) <*>
+      (attributes >>= (.: "zip")) <*>
+      (attributes >>= (.: "country")) <*>
+      (attributes >>= (.: "email")) <*>
+      (attributes >>= (.: "contact")) <*>
+      (attributes >>= (.: "phone")) <*>
+      (attributes >>= (.: "created_at")) <*>
+      (attributes >>= (.: "updated_at"))
