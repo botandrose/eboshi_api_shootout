@@ -2,6 +2,7 @@
   :plugins [[lein-ring "0.8.11"]]
   :ring {:handler clojure-liberator.core/handler}
   :main clojure-liberator.core
+  :test-refresh {:quiet true}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [liberator "0.13"]
                  [compojure "1.3.4"]
