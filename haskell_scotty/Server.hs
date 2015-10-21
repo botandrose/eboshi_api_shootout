@@ -4,7 +4,7 @@ import Web.Scotty
 import Network.HTTP.Types.Status
 import ClientRepo
 import Control.Monad.IO.Class
-import JSONAPIResponse
+import JSONAPIResponse (dataResponse)
 import Client
 
 main :: IO ()
@@ -14,11 +14,12 @@ main = scotty 6969 $ do
 
   get "/api/clients" $ do
     clients <- liftIO getClients
-    json $ dataResponse $ clients
+    jsonAPI clients
 
   post "/api/clients" $ do
     client <- jsonData
     client <- liftIO $ saveClient client
-    json $ dataResponse $ client
+    jsonAPI client
     status status201
 
+jsonAPI resource = json $ dataResponse $ resource
