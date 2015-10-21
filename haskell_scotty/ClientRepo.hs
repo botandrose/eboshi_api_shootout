@@ -25,7 +25,9 @@ saveClient client = do
   execute conn "INSERT INTO clients \
     \(name,address,city,state,zip,country,email,contact,phone,created_at,updated_at) values \
     \(?,?,?,?,?,?,?,?,?,?,?)" client
-  return client { Client.id = (1 :: Int) }
+  results <- query_ conn "SELECT LAST_INSERT_ID()"
+  let [Only clientId] = results
+  return client { Client.id = clientId }
 
 instance QueryResults Client where
   convertResults fs vs =
