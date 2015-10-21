@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module ClientRepo (getClients, saveClient) where
+module ClientRepo (getClients, saveClient, deleteClient) where
 
 import Client
 import ConstructResult
@@ -25,6 +25,12 @@ saveClient client = do
   results <- query_ conn "SELECT LAST_INSERT_ID()"
   let [Only clientId] = results
   return client { Client.id = clientId }
+
+deleteClient :: Int -> IO ()
+deleteClient clientId = do
+  conn <- connectDB
+  execute conn "DELETE FROM clients WHERE id=?" [clientId]
+  return ()
 
 instance QueryResults Client where
   convertResults fs vs =

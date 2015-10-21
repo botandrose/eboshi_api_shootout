@@ -22,4 +22,9 @@ main = scotty 6969 $ do
     jsonAPI client
     status status201
 
+  delete "/api/clients/:id" $ do
+    clientId <- param "id"
+    liftIO $ deleteClient clientId
+    status status204
+
 jsonAPI resource = json $ dataResponse $ resource
