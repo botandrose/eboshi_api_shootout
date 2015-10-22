@@ -15,4 +15,5 @@ getClients = do
   return clients
 
 instance QueryResults Client where
-  convertResults fs vs = Client $... zip fs vs
+  convertResults fs vs =
+      Client $... constructorWrap (undefined :: Client) fs vs
