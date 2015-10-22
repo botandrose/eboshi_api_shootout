@@ -16,9 +16,6 @@ getClients = do
   clients <- query_ conn "SELECT * FROM clients"
   return clients
 
-instance QueryResults Client where
-  convertResults fs vs = Client $... zip fs vs
-
 saveClient :: Client -> IO Client
 saveClient client = do
   conn <- connectDB
