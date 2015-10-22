@@ -15,8 +15,8 @@
 
 (defentity users)
 
-(defn all_users []
+(defn all-users []
   (select users))
 
-(defn all_clients []
+(defn all-clients []
   (select clients))

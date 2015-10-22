@@ -30,9 +30,9 @@
 
 (defresource all-clients
              :available-media-types ["application/json"]
-             :handle-ok (let [all_clients (data-access/all_clients)
+             :handle-ok (let [all-clients (data-access/all-clients)
                               client-transform #(make-json-api-item "clients" %1)
-                              data (map client-transform all_clients)]
+                              data (map client-transform all-clients)]
                           {:data data}))
 
 (defroutes app
