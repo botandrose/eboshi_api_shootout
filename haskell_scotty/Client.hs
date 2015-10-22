@@ -5,11 +5,16 @@ module Client (Client(..)) where
 
 import Prelude hiding (zip)
 
-import Data.Aeson
+import Control.Applicative
+import Data.Aeson hiding (json)
 import Data.Data
 import Data.Time.Clock (UTCTime)
 import Data.Time.ISO8601
-import Control.Applicative
+import Database.MySQL.Simple.QueryResults
+import Database.MySQL.Simple.QueryParams
+import Database.MySQL.Simple.Param
+
+import ConstructResult
 
 data Client = Client {
   id :: Int,
@@ -59,3 +64,13 @@ instance FromJSON Client where
       (attributes >>= (.: "phone")) <*>
       (attributes >>= (.: "created_at")) <*>
       (attributes >>= (.: "updated_at"))
+  parseJSON _ = error "unexpected non-object JSON"
+
+instance QueryResults Client where
+  convertResults fs vs =
+      Client $... constructorWrap (undefined :: Client) fs vs
+
+instance QueryParams Client where
+  renderParams
+    (Client _ name' address' city' state' zip' country' email' contact' phone' created_at' updated_at') =
+      [render name', render address', render city', render state', render zip', render country', render email', render contact', render phone', render created_at', render updated_at']

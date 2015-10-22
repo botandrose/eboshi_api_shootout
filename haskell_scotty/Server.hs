@@ -5,7 +5,7 @@ import Network.HTTP.Types.Status
 import ClientRepo
 import Control.Monad.IO.Class
 import JSONAPIResponse (dataResponse)
-import Client
+import Data.Aeson (ToJSON)
 
 main :: IO ()
 main = scotty 6969 $ do
@@ -18,8 +18,8 @@ main = scotty 6969 $ do
 
   post "/api/clients" $ do
     client <- jsonData
-    client <- liftIO $ saveClient client
-    jsonAPI client
+    client' <- liftIO $ saveClient client
+    jsonAPI client'
     status status201
 
   delete "/api/clients/:id" $ do
@@ -27,4 +27,5 @@ main = scotty 6969 $ do
     liftIO $ deleteClient clientId
     status status204
 
+jsonAPI :: ToJSON s => s -> ActionM ()
 jsonAPI resource = json $ dataResponse $ resource
