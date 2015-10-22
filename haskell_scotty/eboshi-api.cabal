@@ -29,6 +29,7 @@ executable eboshi-api
                        transformers >=0.4 && <1,
                        bytestring >=0.10 && <1,
                        iso8601-time >= 0.1 && <1,
-                       time >= 1.4 && <2
+                       time >= 1.4 && <2,
+                       http-types >=0.8 && <1
   -- hs-source-dirs:      
   default-language:    Haskell2010

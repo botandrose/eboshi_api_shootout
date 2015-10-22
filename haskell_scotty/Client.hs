@@ -9,6 +9,7 @@ import Data.Aeson
 import Data.Data
 import Data.Time.Clock (UTCTime)
 import Data.Time.ISO8601
+import Control.Applicative
 
 data Client = Client {
   id :: Int,
@@ -41,3 +42,20 @@ instance ToJSON Client where
       "phone" .= phone client,
       "created_at" .= formatISO8601 (created_at client),
       "updated_at" .= formatISO8601 (updated_at client) ] ]
+
+instance FromJSON Client where
+  parseJSON (Object json) = do
+    let attributes = (json .: "data") >>= (.: "attributes")
+    Client <$>
+      (parseJSON $ Number $ 0) <*>
+      (attributes >>= (.: "name")) <*>
+      (attributes >>= (.: "address")) <*>
+      (attributes >>= (.: "city")) <*>
+      (attributes >>= (.: "state")) <*>
+      (attributes >>= (.: "zip")) <*>
+      (attributes >>= (.: "country")) <*>
+      (attributes >>= (.: "email")) <*>
+      (attributes >>= (.: "contact")) <*>
+      (attributes >>= (.: "phone")) <*>
+      (attributes >>= (.: "created_at")) <*>
+      (attributes >>= (.: "updated_at"))
