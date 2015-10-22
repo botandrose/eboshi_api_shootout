@@ -30,6 +30,7 @@
 module ConstructResult (ConstructorApply(..), constructorWrap) where
 
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BS8
 import Data.Data
 import Database.MySQL.Base.Types
 import Database.MySQL.Simple.Result
@@ -53,7 +54,7 @@ constructorWrap c fs vs =
                   | otherwise = error $ "constructor field name mismatch: " ++
                                 cf ++ " / " ++ dbfs
                   where
-                    dbfs = show $ fieldName dbf
+                    dbfs = BS8.unpack $ fieldName dbf
       cs = constrFields $ flip indexConstr 1 $ dataTypeOf c
 
 -- | Type class to allow a database row
