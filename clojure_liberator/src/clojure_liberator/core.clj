@@ -19,10 +19,10 @@
   (-write [date out]
     (json/-write (fmt/unparse formatter date) out)))
 
-(defn transform-type [type-name value]
-  {:id (str (:id value)) :type type-name :attributes (dissoc value :id)})
-
-(def client-transform (partial transform-type "clients"))
+(defn make-json-api-item [type-name value]
+  {:id         (str (:id value))
+   :type       type-name
+   :attributes (dissoc value :id)})
 
 (defresource hello-world
              :available-media-types ["text/plain"]
@@ -30,7 +30,10 @@
 
 (defresource all-clients
              :available-media-types ["application/json"]
-             :handle-ok {:data (map client-transform (data-access/all_clients))})
+             :handle-ok (let [all_clients (data-access/all_clients)
+                              client-transform #(make-json-api-item "clients" %1)
+                              data (map client-transform all_clients)]
+                          {:data data}))
 
 (defroutes app
            (ANY "/api/test" [] hello-world)
