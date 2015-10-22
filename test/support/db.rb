@@ -17,10 +17,12 @@ class DB
   private
 
   def query statement
+    process_password
     system "mysql -u'#{username}' #{database} -e'#{statement}'"
   end
 
   def create_database
+    process_password
     statement = "CREATE DATABASE IF NOT EXISTS `#{database}`;"
     system "mysql -u'#{username}' -e'#{statement}'"
   end
@@ -29,8 +31,10 @@ class DB
     ENV["EBOSHI_API_SHOOTOUT_MYSQL_USERNAME"] || "root"
   end
 
-  def password
-    ENV["EBOSHI_API_SHOOTOUT_MYSQL_PASSWORD"] || ""
+  def process_password
+    if ENV["EBOSHI_API_SHOOTOUT_MYSQL_PASSWORD"] then
+      ENV["MYSQL_PWD"] = ENV["EBOSHI_API_SHOOTOUT_MYSQL_PASSWORD"]
+    end
   end
 
   def database
