@@ -1,22 +1,15 @@
-(ns clojure-liberator.data-access)
-(use 'korma.db)
-(use 'korma.core)
-(require '[clojure.string :as str])
+(ns clojure-liberator.data-access
+  (:require [korma.db :as db]
+            [korma.core :as k]
+            clj-time.jdbc))
 
-(defdb eboshi (mysql {:db "eboshi_test"
-                       :user "root"
-                       :password ""
-                       ;; optional keys
-                       }))
+(db/defdb eboshi (db/mysql {:db       "eboshi_test"
+                            :user     "root"
+                            :password ""}))
 
-(declare clients users)
+(declare clients)
 
-(defentity clients)
-
-(defentity users)
-
-(defn all-users []
-  (select users))
+(k/defentity clients)
 
 (defn all-clients []
-  (select clients))
+  (k/select clients))

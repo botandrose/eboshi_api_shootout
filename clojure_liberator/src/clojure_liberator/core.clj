@@ -2,24 +2,21 @@
   ;(:gen-class)
   (:require [liberator.core :refer [resource defresource]]
             [ring.middleware.params :refer [wrap-params]]
-            [compojure.core :refer [defroutes ANY]]
+            [compojure.core :refer [defroutes GET]]
             [ring.adapter.jetty :as jetty]
             [clojure-liberator.data-access :as data-access]
             [clojure.data.json :as json]
-            [clj-time.format :as fmt]
-            [clj-time.core :as t]
-            clj-time.jdbc
-            )
+            [clj-time.format :as fmt])
   (:import (org.joda.time DateTime)))
 
-(def formatter (fmt/formatters :date-time-no-ms))
+(def ^:private formatter (fmt/formatters :date-time-no-ms))
 
 (extend-type DateTime
   json/JSONWriter
   (-write [date out]
     (json/-write (fmt/unparse formatter date) out)))
 
-(defn make-json-api-item [type-name value]
+(defn- make-json-api-item [type-name value]
   {:id         (str (:id value))
    :type       type-name
    :attributes (dissoc value :id)})
@@ -30,17 +27,18 @@
 
 (defresource all-clients
              :available-media-types ["application/json"]
-             :handle-ok (let [all-clients (data-access/all-clients)
-                              client-transform #(make-json-api-item "clients" %1)
-                              data (map client-transform all-clients)]
-                          {:data data}))
+             :handle-ok (let [client-transform (partial make-json-api-item "clients")
+                              all-clients (data-access/all-clients)
+                              json-api-clients (map client-transform all-clients)]
+                          {:data json-api-clients}))
 
 (defroutes app
-           (ANY "/api/test" [] hello-world)
-           (ANY "/api/clients" [] all-clients))
+           (GET "/api/test" [] hello-world)
+           (GET "/api/clients" [] all-clients))
 
+; note: not needed quite yet, but middleware that takes query parameters and makes them available to the route as a map.
 (def handler
   (-> app wrap-params))
 
 (defn -main []
-  (jetty/run-jetty handler {:port 6969 :join? true :daemon? true}))
+  (jetty/run-jetty handler {:port 6969}))

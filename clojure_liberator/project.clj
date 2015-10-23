@@ -8,7 +8,7 @@
                  [liberator "0.13"]
                  [compojure "1.3.4"]
                  [ring "1.4.0"]
-                 [korma "0.4.0"]
+                 [korma "0.4.1"]
                  [mysql/mysql-connector-java "5.1.37"]
                  [clj-time "0.11.0"]
                  ])
