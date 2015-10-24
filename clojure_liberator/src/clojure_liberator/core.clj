@@ -54,8 +54,6 @@
                                      json-api-data (json/read-json body)
                                      client (from-json-api-item json-api-data [:created_at :updated_at])
                                      saved-client (data-access/create-client client)]
-                                 (clojure.pprint/pprint json-api-data)
-                                 (clojure.pprint/pprint client)
                                  {:data (make-json-api-item "clients" saved-client)})))
 
 (defroutes app
