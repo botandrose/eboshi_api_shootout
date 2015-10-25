@@ -1,6 +1,6 @@
 (ns clojure-liberator.data-access
   (:require [korma.db :as db]
-            [korma.core :as korma]
+            [korma.core :as k]
             [clojure.java.jdbc :as jdbc]
             [clj-time.coerce :as c]
             clj-time.jdbc)
@@ -18,12 +18,15 @@
 
 (declare clients)
 
-(korma/defentity clients)
+(k/defentity clients)
 
 (defn all-clients []
-  (korma/select clients))
+  (k/select clients))
 
 (defn create-client [client]
-  (let [response (korma/insert clients (korma/values client))
+  (let [response (k/insert clients (k/values client))
         new-id (response :generated_key)]
     (assoc client :id new-id)))
+
+(defn delete-client [id]
+  (k/delete clients (k/where {:id id})))
