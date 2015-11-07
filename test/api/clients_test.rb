@@ -8,7 +8,7 @@ describe "clients resource API" do
 
   describe "GET /api/clients" do
     before do
-      skip_if_impl_in %w(node_express kotlin_spark)
+      skip_if_impl_in %w(node_express)
 
       db.seed(<<-SQL)
         INSERT INTO clients SET
