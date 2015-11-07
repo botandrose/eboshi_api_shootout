@@ -1,5 +1,7 @@
 language: elixir
 install: true
+jdk:
+  - oraclejdk8
 script: make
 addons:
   apt:
