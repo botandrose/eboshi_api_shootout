@@ -1,4 +1,4 @@
-language: java
+language:elixir 
 script: make
 jdk:
 - oraclejdk8
