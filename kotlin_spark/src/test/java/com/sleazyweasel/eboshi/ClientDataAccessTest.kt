@@ -15,7 +15,7 @@ class ClientDataAccessTest {
 
         val testClass = ClientDataAccess(jdbcTemplate)
 
-        val results = testClass.allClients()
+        val results = testClass.allClients.invoke()
         assertEquals(listOf(Client(clientMap)), results)
     }
 }
