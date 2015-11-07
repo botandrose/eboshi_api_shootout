@@ -1,7 +1,4 @@
 language: elixir 
-script: make
-jdk:
-- oraclejdk8
 install: true
 addons:
   apt:
@@ -13,3 +10,6 @@ addons:
 before_install:
   - export PATH=/opt/ghc/7.6.3/bin:/opt/cabal/1.18/bin:$PATH
   - cabal update
+script:
+  - jdk_switcher use oraclejdk8
+  - make
