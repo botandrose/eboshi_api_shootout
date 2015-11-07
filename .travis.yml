@@ -1,4 +1,4 @@
-language: elixir
+language: elixir 
 install: true
 script: make
 addons:
@@ -7,7 +7,10 @@ addons:
       - cabal-install-1.18
       - ghc-7.6.3
       - python-virtualenv
+      - oracle-java8-installer
     sources: [hvr-ghc]
 before_install:
   - export PATH=/opt/ghc/7.6.3/bin:/opt/cabal/1.18/bin:$PATH
   - cabal update
+env:
+  - JAVA_HOME=/usr/lib/jvm/java-8-oracle
