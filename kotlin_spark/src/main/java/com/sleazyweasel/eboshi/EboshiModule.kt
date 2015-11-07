@@ -13,7 +13,7 @@ class EboshiModule : AbstractModule() {
     override fun configure() {
     }
 
-    @Provides
+    @Provides @Singleton
     fun jdbcTemplate(): JdbcTemplate = JdbcTemplate(dataSource())
 
     private fun dataSource(): DataSource =
