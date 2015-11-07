@@ -8,6 +8,7 @@ addons:
       - ghc-7.6.3
       - python-virtualenv
       - oracle-java8-installer
+      - oracle-java8-set-default
     sources: [hvr-ghc]
 before_install:
   - export PATH=/opt/ghc/7.6.3/bin:/opt/cabal/1.18/bin:$PATH
