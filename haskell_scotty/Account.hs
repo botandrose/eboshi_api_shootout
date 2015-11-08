@@ -1,11 +1,18 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 
 module Account (Account(..)) where
 
 import Control.Applicative
 import Data.Aeson hiding (json)
+import Data.Data
 import Data.Time.Clock (UTCTime)
 import Data.Time.ISO8601
+import Database.MySQL.Simple.QueryResults
+import Database.MySQL.Simple.QueryParams
+import Database.MySQL.Simple.Param
+
+import ConstructResult
 
 data Account = Account {
   id :: Int,
@@ -13,7 +20,7 @@ data Account = Account {
   email :: String,
   created_at :: UTCTime,
   updated_at :: UTCTime
-}
+} deriving (Data, Typeable)
 
 instance ToJSON Account where
   toJSON account = object [
@@ -35,4 +42,13 @@ instance FromJSON Account where
       (parseJSON "1000-01-01T00:00:00Z") <*> -- FIXME get default values working
       (parseJSON "1000-01-01T00:00:00Z")
   parseJSON _ = error "unexpected non-object JSON"
+
+instance QueryResults Account where
+  convertResults fs vs =
+      Account $... constructorWrap (undefined :: Account) fs vs
+
+instance QueryParams Account where
+  renderParams
+    (Account _ name' email' created_at' updated_at') =
+      [render name', render email', render created_at', render updated_at']
 
