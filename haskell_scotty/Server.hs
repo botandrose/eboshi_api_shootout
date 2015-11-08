@@ -3,9 +3,10 @@
 import Web.Scotty
 import Network.HTTP.Types.Status
 import ClientRepo
+import AccountRepo
 import Control.Monad.IO.Class
 import JSONAPIResponse (dataResponse)
-import Data.Aeson (ToJSON, object, (.=))
+import Data.Aeson (ToJSON)
 
 main :: IO ()
 main = scotty 6969 $ do
@@ -13,16 +14,7 @@ main = scotty 6969 $ do
     html "Hello world"
 
   post "/api/account" $ do
-    json $ object ["data" .= object [
-        "type" .= ("accounts" :: String),
-        "id" .= ("1" :: String),
-        "attributes" .= object [
-            "name" .= ("Micah Geisel" :: String),
-            "email" .= ("micah@botandrose.com" :: String),
-            "created_at" .= ("1000-10-10T10:10:10Z" :: String),
-            "updated_at" .= ("1000-10-10T10:10:10Z" :: String)
-          ]
-      ]]
+    jsonAPI saveAccount
     status status201
 
   get "/api/clients" $ do
