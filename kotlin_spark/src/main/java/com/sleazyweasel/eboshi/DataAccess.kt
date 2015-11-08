@@ -16,5 +16,9 @@ open class ClientDataAccess constructor(private val jdbcTemplate: JdbcTemplate, 
         val key = insertClient.executeAndReturnKey(client.data).toInt()
         Client(client.data.plus("id" to key))
     }
+
+    var delete: (Int) -> Unit = {
+        jdbcTemplate.update("delete from clients where id = ?", it)
+    }
 }
 

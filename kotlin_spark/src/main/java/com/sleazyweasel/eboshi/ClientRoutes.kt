@@ -1,6 +1,7 @@
 package com.sleazyweasel.eboshi
 
 import org.eclipse.jetty.http.HttpStatus
+import spark.Request
 import spark.Response
 import javax.inject.Inject
 
@@ -19,4 +20,9 @@ class ClientRoutes @Inject constructor(private val clientDataAccess: ClientDataA
         mapOf("data" to insertedClient.toJsonApiObject())
     }
 
+    val delete = { request: Request, response: Response ->
+        val id = request.params(":id").toInt()
+        clientDataAccess.delete(id)
+        response.status(HttpStatus.NO_CONTENT_204)
+    }
 }

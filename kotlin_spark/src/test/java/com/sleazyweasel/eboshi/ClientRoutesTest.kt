@@ -2,7 +2,9 @@ package com.sleazyweasel.eboshi
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import spark.Request
 import spark.Response
 import java.util.*
 
@@ -43,4 +45,22 @@ class ClientRoutesTest {
         assertEquals(expected, result)
         verify(response).status(201)
     }
+
+    @Test
+    fun testDelete() {
+        val response = mock(Response::class)
+        val request = mock(Request::class)
+
+        var calledValue: Int? = null
+        clientDataAccess.delete = { i: Int -> calledValue = i }
+
+        `when`(request.params(":id")).thenReturn("555")
+
+        val testClass = ClientRoutes(clientDataAccess)
+
+        testClass.delete(request, response)
+        verify(response).status(204)
+        assertEquals(555, calledValue)
+    }
+
 }

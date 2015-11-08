@@ -3,6 +3,7 @@ package com.sleazyweasel.eboshi
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert
 
@@ -30,5 +31,14 @@ class ClientDataAccessTest {
         `when`(jdbcInsert.executeAndReturnKey(clientMap)).thenReturn(4)
         val result = testClass.insert(client)
         assertEquals(Client(clientMap.plus("id" to 4)), result)
+    }
+
+    @Test
+    fun testDelete() {
+        val testClass = ClientDataAccess(jdbcTemplate)
+
+        testClass.delete(555)
+
+        verify(jdbcTemplate).update("delete from clients where id = ?", 555)
     }
 }

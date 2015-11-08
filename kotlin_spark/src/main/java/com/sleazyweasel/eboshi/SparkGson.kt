@@ -30,8 +30,8 @@ class SparkGson @Inject constructor(private val gson: Gson) {
         }, gsonTransformer)
     }
 
+    fun delete(path: String, route: (request: Request, response: Response) -> Any?) = Spark.delete(path, route)
     fun port(port: Int) = Spark.port(port)
-
     fun get(path: String, route: (request: Request, response: Response) -> Any?) = Spark.get(path, route)
 
 }
