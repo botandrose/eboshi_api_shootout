@@ -33,7 +33,7 @@ describe "auth API" do
           type: "auth",
           attributes: {
             email: "micah@botandrose.com",
-            token: /\A\w+\.\w+\.\w+\Z/,
+            token: /\A(\w|-)+.(\w|-)+.(\w|-)+\Z/,
           },
         }
       })
