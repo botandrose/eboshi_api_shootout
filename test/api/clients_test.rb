@@ -122,7 +122,7 @@ describe "clients resource API" do
 
   describe "DELETE /api/clients/:id" do
     before do
-      skip_if_impl_in %w(node_express ruby_sinatra kotlin_spark)
+      skip_if_impl_in %w(node_express ruby_sinatra)
 
       db.seed(<<-SQL)
         INSERT INTO clients SET
