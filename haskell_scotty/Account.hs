@@ -18,6 +18,7 @@ data Account = Account {
   id :: Int,
   name :: String,
   email :: String,
+  crypted_password :: String,
   created_at :: UTCTime,
   updated_at :: UTCTime
 } deriving (Data, Typeable)
@@ -39,6 +40,7 @@ instance FromJSON Account where
       (parseJSON $ Number $ 0) <*>
       (attributes >>= (.: "name")) <*>
       (attributes >>= (.: "email")) <*>
+      (attributes >>= (.: "password")) <*>
       (parseJSON "1000-01-01T00:00:00Z") <*> -- FIXME get default values working
       (parseJSON "1000-01-01T00:00:00Z")
   parseJSON _ = error "unexpected non-object JSON"
@@ -49,6 +51,6 @@ instance QueryResults Account where
 
 instance QueryParams Account where
   renderParams
-    (Account _ name' email' created_at' updated_at') =
-      [render name', render email', render created_at', render updated_at']
+    (Account _ name' email' crypted_password' created_at' updated_at') =
+      [render name', render email', render crypted_password', render created_at', render updated_at']
 
