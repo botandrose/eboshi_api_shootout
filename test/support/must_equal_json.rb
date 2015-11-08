@@ -1,5 +1,23 @@
-class Object
-  def must_equal_json hash
-    must_equal JSON[hash.to_json]
+module MustEqualJson
+  def self.compare a, b
+    case a
+    when Hash
+      (a.keys + b.keys.map(&:to_s)).uniq.each do |key|
+        compare a[key], b[key.to_sym]
+      end
+    when Array
+      [a.length, b.length].max.times do |index|
+        compare a[index], b[index]
+      end
+    else
+      a.must_match b
+    end
   end
 end
+
+class Object
+  def must_equal_json hash
+    MustEqualJson.compare self, hash
+  end
+end
+
