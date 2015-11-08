@@ -28,15 +28,12 @@ describe "auth API" do
         }
       })
 
-      # don't want test to mandate secret key, so pull out token and validate JWT format
-      json_body = response.json_body
-      token = json_body.fetch("data").fetch("attributes").delete("token")
-      token.must_match /\A\w+\.\w+\.\w+\Z/
-      json_body.must_equal_json({
+      response.json_body.must_equal_json({
         data: {
           type: "auth",
           attributes: {
             email: "micah@botandrose.com",
+            token: /\A\w+\.\w+\.\w+\Z/,
           },
         }
       })

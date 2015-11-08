@@ -23,20 +23,17 @@ describe "account signup API" do
         }
       })
 
-      # we can't stub time, so pull out timestamps and assert on format :(
-      json_body = response.json_body
-      created_at = json_body["data"]["attributes"].delete("created_at")
-      updated_at = json_body["data"]["attributes"].delete("updated_at")
-      created_at.must_match /\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\Z/
-      updated_at.must_match /\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\Z/
+      iso_8601_pattern = /\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\Z/
 
-      json_body.must_equal_json({
+      response.json_body.must_equal_json({
         data: {
           type: "accounts",
           id: "1",
           attributes: {
             name: "Micah Geisel",
             email: "micah@botandrose.com",
+            created_at: iso_8601_pattern,
+            updated_at: iso_8601_pattern,
           },
         }
       })
