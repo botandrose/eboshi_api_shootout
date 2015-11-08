@@ -28,3 +28,9 @@ instance FromJSON Auth where
       (attributes >>= (.: "password"))
   parseJSON _ = error "unexpected non-object JSON"
 
+invalidAuthError = do
+  object [
+      "errors" .= [ object [
+          "title" .= ("Invalid authentication credentials" :: String)
+        ] ]
+    ]

@@ -26,22 +26,16 @@ main = scotty 6969 $ do
     isAuthenticated <- liftIO $ authenticateAccount auth
     if isAuthenticated
       then do
-        json $ object [
-            "data" .= object [
-                "type" .= ("auth" :: String),
-                "attributes" .= object [
-                    "email" .= ("micah@botandrose.com" :: String),
-                    "token" .= ("asdf.asdf.asdf" :: String)
-                  ]
+        jsonAPI $ object [
+            "type" .= ("auth" :: String),
+            "attributes" .= object [
+                "email" .= ("micah@botandrose.com" :: String),
+                "token" .= ("asdf.asdf.asdf" :: String)
               ]
           ]
         status status200
       else do
-        json $ object [
-            "errors" .= [ object [
-                "title" .= ("Invalid authentication credentials" :: String)
-              ] ]
-          ]
+        json $ invalidAuthError
         status status401
 
   get "/api/clients" $ do
