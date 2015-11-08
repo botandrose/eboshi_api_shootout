@@ -29,8 +29,12 @@ main = scotty 6969 $ do
         jsonAPI auth'
         status status200
       else do
-        json $ invalidAuthError
+        json $ invalidAuthCredentialsError
         status status401
+
+  get "/api/greet" $ do
+    json $ invalidAuthTokenError
+    status status401
 
   get "/api/clients" $ do
     clients <- liftIO getClients

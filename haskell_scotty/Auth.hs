@@ -51,9 +51,16 @@ instance FromJSON Auth where
       (parseJSON $ toJSON $ False)
   parseJSON _ = error "unexpected non-object JSON"
 
-invalidAuthError = do
+invalidAuthCredentialsError = do
   object [
       "errors" .= [ object [
           "title" .= ("Invalid authentication credentials" :: String)
+        ] ]
+    ]
+
+invalidAuthTokenError = do
+  object [
+      "errors" .= [ object [
+          "title" .= ("Invalid authentication token" :: String)
         ] ]
     ]
