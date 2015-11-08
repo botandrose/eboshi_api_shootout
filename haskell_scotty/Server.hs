@@ -5,7 +5,7 @@ import Network.HTTP.Types.Status
 import ClientRepo
 import Control.Monad.IO.Class
 import JSONAPIResponse (dataResponse)
-import Data.Aeson (ToJSON)
+import Data.Aeson (ToJSON, object, (.=))
 
 main :: IO ()
 main = scotty 6969 $ do
@@ -13,7 +13,16 @@ main = scotty 6969 $ do
     html "Hello world"
 
   post "/api/account" $ do
-    text "{ \"data\": { \"type\": \"accounts\", \"id\": \"1\", \"attributes\": { \"name\": \"Micah Geisel\", \"email\": \"micah@botandrose.com\", \"created_at\": \"1000-10-10T10:10:10Z\", \"updated_at\": \"1000-10-10T10:10:10Z\" } } }"
+    json $ object ["data" .= object [
+        "type" .= ("accounts" :: String),
+        "id" .= ("1" :: String),
+        "attributes" .= object [
+            "name" .= ("Micah Geisel" :: String),
+            "email" .= ("micah@botandrose.com" :: String),
+            "created_at" .= ("1000-10-10T10:10:10Z" :: String),
+            "updated_at" .= ("1000-10-10T10:10:10Z" :: String)
+          ]
+      ]]
     status status201
 
   get "/api/clients" $ do
