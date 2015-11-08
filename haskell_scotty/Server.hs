@@ -9,6 +9,8 @@ import Auth
 import Control.Monad.IO.Class
 import JSONAPIResponse (dataResponse)
 import Data.Aeson hiding (json)
+import Data.Maybe
+import Data.Text.Lazy
 
 main :: IO ()
 main = scotty 6969 $ do
@@ -33,8 +35,22 @@ main = scotty 6969 $ do
         status status401
 
   get "/api/greet" $ do
-    json $ invalidAuthTokenError
-    status status401
+    authorizationMaybe <- header "Authorization"
+    case authorizationMaybe of
+      Just authHeader -> do
+        let userId = userIdFromHeader authHeader
+        account <- liftIO $ findAccount userId
+        case Account.id account of
+          0 -> do
+            json invalidAuthTokenError
+            status status401
+          _ -> do
+            let message = (append (append "Hello, " (pack (name account))) "!")
+            text $ message
+            status status200
+      _ -> do
+        json invalidAuthTokenError
+        status status401
 
   get "/api/clients" $ do
     clients <- liftIO getClients

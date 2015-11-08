@@ -7,10 +7,13 @@ import DBConnection
 import Database.MySQL.Simple
 import Control.Applicative
 import qualified Data.Map as Map
-import Data.Aeson hiding (json)
+import Data.Aeson
+import Data.Aeson.Types
 import Data.Data
+import Data.Text.Lazy
 import Encryption
-import Web.JWT
+import Web.JWT hiding (decode)
+import Data.Maybe
 
 authenticateAccount :: Auth -> IO Auth
 authenticateAccount auth = do
@@ -26,6 +29,21 @@ data Auth = Auth {
   password :: String,
   isValid :: Bool
 } deriving (Data, Typeable)
+
+userIdFromHeader :: Text -> Int
+userIdFromHeader header =
+  let token = replace "Bearer " "" header
+      mJwt = decodeAndVerifySignature (secret "fart69") (toStrict token)
+  in case mJwt of
+    Just jwt -> extractIdFromPayload $ unregisteredClaims $ claims $ jwt
+    _ -> 0
+
+extractIdFromPayload :: ClaimsMap -> Int
+extractIdFromPayload claims =
+  let idValue = fromJust $ Map.lookup "id" claims
+      userIdResult = fromJSON $ idValue
+  in case (userIdResult :: Result Int) of
+    Success userId -> userId
 
 jwtToken auth =
   let key = secret "fart69"
