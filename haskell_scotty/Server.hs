@@ -26,13 +26,7 @@ main = scotty 6969 $ do
     isAuthenticated <- liftIO $ authenticateAccount auth
     if isAuthenticated
       then do
-        jsonAPI $ object [
-            "type" .= ("auth" :: String),
-            "attributes" .= object [
-                "email" .= ("micah@botandrose.com" :: String),
-                "token" .= ("asdf.asdf.asdf" :: String)
-              ]
-          ]
+        jsonAPI auth
         status status200
       else do
         json $ invalidAuthError

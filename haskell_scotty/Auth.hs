@@ -20,6 +20,13 @@ data Auth = Auth {
   password :: String
 }
 
+instance ToJSON Auth where
+  toJSON auth = object [
+    "type" .= ("auth" :: String),
+    "attributes" .= object [
+        "email" .= email auth,
+        "token" .= ("asdf.asdf.asdf" :: String) ] ]
+
 instance FromJSON Auth where
   parseJSON (Object json) = do
     let attributes = (json .: "data") >>= (.: "attributes")
