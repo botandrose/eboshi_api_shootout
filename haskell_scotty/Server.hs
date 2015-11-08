@@ -23,10 +23,10 @@ main = scotty 6969 $ do
 
   post "/api/auth" $ do
     auth <- jsonData
-    isAuthenticated <- liftIO $ authenticateAccount auth
-    if isAuthenticated
+    auth' <- liftIO $ authenticateAccount auth
+    if isValid auth'
       then do
-        jsonAPI auth
+        jsonAPI auth'
         status status200
       else do
         json $ invalidAuthError
