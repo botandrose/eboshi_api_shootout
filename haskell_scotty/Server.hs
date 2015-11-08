@@ -14,7 +14,9 @@ main = scotty 6969 $ do
     html "Hello world"
 
   post "/api/account" $ do
-    jsonAPI saveAccount
+    account <- jsonData
+    account' <- liftIO $ saveAccount account
+    jsonAPI account'
     status status201
 
   get "/api/clients" $ do
