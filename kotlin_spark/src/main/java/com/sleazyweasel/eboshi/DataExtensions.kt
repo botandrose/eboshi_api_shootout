@@ -5,6 +5,8 @@ import java.util.*
 //todecide: extension functions like these, or functions that take a Client parameter?
 fun Client.toJsonApiObject() = JsonApiObject(id?.toString(), "clients", data.minus("id"))
 
+fun Account.toJsonApiObject() = JsonApiObject(id?.toString(), "accounts", data.minus("id"))
+
 fun Client.convertDateFields(): Client {
     return Client(data.plus(listOf("created_at" to convertToDate("created_at"), "updated_at" to convertToDate("updated_at"))).filterValues { it != null })
 }
