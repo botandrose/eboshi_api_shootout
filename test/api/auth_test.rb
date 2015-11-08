@@ -8,7 +8,7 @@ describe "auth API" do
 
   describe "POST /api/auth" do
     before do
-      skip_if_impl_in %w(crystal_kemal elixir_phoenix haskell_scotty node_express node_hapi python_flask ruby_sinatra clojure_liberator)
+      skip_if_impl_in %w(clojure_liberator crystal_kemal elixir_phoenix node_express node_hapi python_flask ruby_sinatra)
 
       sign_up_account({
         name: "Micah Geisel",

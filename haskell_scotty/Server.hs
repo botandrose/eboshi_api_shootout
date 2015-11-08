@@ -12,6 +12,10 @@ main = scotty 6969 $ do
   get "/api/test" $ do
     html "Hello world"
 
+  post "/api/account" $ do
+    text "{ \"data\": { \"type\": \"accounts\", \"id\": \"1\", \"attributes\": { \"name\": \"Micah Geisel\", \"email\": \"micah@botandrose.com\", \"created_at\": \"1000-10-10T10:10:10Z\", \"updated_at\": \"1000-10-10T10:10:10Z\" } } }"
+    status status201
+
   get "/api/clients" $ do
     clients <- liftIO getClients
     jsonAPI clients
