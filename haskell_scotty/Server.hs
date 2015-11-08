@@ -6,7 +6,7 @@ import ClientRepo
 import AccountRepo
 import Control.Monad.IO.Class
 import JSONAPIResponse (dataResponse)
-import Data.Aeson (ToJSON)
+import Data.Aeson hiding (json)
 
 main :: IO ()
 main = scotty 6969 $ do
@@ -18,6 +18,14 @@ main = scotty 6969 $ do
     account' <- liftIO $ saveAccount account
     jsonAPI account'
     status status201
+
+  post "/api/auth" $ do
+    json $ object [
+        "errors" .= [ object [
+            "title" .= ("Invalid authentication credentials" :: String)
+          ] ]
+      ]
+    status status401
 
   get "/api/clients" $ do
     clients <- liftIO getClients
