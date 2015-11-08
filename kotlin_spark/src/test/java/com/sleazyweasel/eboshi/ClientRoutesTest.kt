@@ -27,21 +27,19 @@ class ClientRoutesTest {
         val createdAtString = "1970-08-07T10:20:00Z"
         val clientAttributes = mapOf("name" to "John", "created_at" to createdAtString)
         val convertedAttributes = mapOf("name" to "John", "created_at" to isoDateFormat.parse(createdAtString))
-        val createdClient = Client(convertedAttributes.plus("id" to 555))
 
         val request = JsonApiRequest(JsonApiObject(null, "clients", clientAttributes))
         val expected = mapOf("data" to JsonApiObject("555", "clients", convertedAttributes))
 
         clientDataAccess.insert = { client: Client ->
             assertEquals(Client(convertedAttributes), client);
-            createdClient
+            Client(convertedAttributes.plus("id" to 555))
         }
         val response = mock(Response::class)
 
-
         val testClass = ClientRoutes(clientDataAccess)
-        val result = testClass.create(request, response)
 
+        val result = testClass.create(request, response)
         assertEquals(expected, result)
         verify(response).status(201)
     }
