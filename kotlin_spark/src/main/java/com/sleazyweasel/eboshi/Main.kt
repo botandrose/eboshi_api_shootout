@@ -16,6 +16,7 @@ fun main(args: Array<String>) {
     spark.delete("/api/clients/:id", clientRoutes.delete)
 
     spark.post("/api/account", JsonApiRequest::class, accountRoutes.create)
+    spark.post("/api/auth", JsonApiRequest::class, accountRoutes.auth)
 }
 
 

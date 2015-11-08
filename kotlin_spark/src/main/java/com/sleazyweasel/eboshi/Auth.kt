@@ -9,7 +9,7 @@ class Auth {
         Encrypted(hashedPassword, salt)
     }
 
-    val verify = { plainText: String, hashedPassword: String ->
+    val verify = { plainText: String?, hashedPassword: String? ->
         BCrypt.checkpw(plainText, hashedPassword)
     }
 }

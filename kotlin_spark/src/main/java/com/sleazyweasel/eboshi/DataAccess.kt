@@ -36,5 +36,9 @@ open class AccountDataAccess constructor(private val jdbcTemplate: JdbcTemplate,
     var get: (Int) -> Account = { id ->
         Account(DataAccessUtils.requiredSingleResult(jdbcTemplate.queryForList("select * from users where id = ?", id)))
     }
+
+    var getByEmail: (String) -> Account = { email ->
+        Account(DataAccessUtils.requiredSingleResult(jdbcTemplate.queryForList("select * from users where email = ?", email)))
+    }
 }
 
