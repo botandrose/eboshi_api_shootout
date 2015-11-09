@@ -14,8 +14,9 @@ open class ClientDataAccess constructor(private val jdbcTemplate: JdbcTemplate, 
     var allClients = { jdbcTemplate.queryForList("select * from clients").map { Client(it) } }
 
     var insert: (Client) -> Client = { client ->
-        val key = insertClient.executeAndReturnKey(client.data).toInt()
-        Client(client.data.plus("id" to key))
+        val initialized = client.data.plusIfAbsent(listOf("created_at" to Date(), "updated_at" to Date()))
+        val key = insertClient.executeAndReturnKey(initialized).toInt()
+        Client(initialized.plus("id" to key))
     }
 
     var delete: (Int) -> Unit = {
@@ -29,7 +30,7 @@ open class AccountDataAccess constructor(private val jdbcTemplate: JdbcTemplate,
     this(jdbcTemplate, SimpleJdbcInsert(jdbcTemplate).withTableName("users").usingGeneratedKeyColumns("id"))
 
     var insert: (Account) -> Account = { account ->
-        val initialized = account.data.plus(listOf("created_at" to Date(), "updated_at" to Date()))
+        val initialized = account.data.plusIfAbsent(listOf("created_at" to Date(), "updated_at" to Date()))
         val key = insertUser.executeAndReturnKey(initialized).toInt()
         Account(initialized.plus("id" to key))
     }
