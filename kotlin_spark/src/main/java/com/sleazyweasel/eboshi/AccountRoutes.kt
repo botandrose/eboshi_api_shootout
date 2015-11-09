@@ -4,7 +4,6 @@ import org.eclipse.jetty.http.HttpStatus
 import org.jose4j.jwt.consumer.InvalidJwtException
 import spark.Request
 import spark.Response
-import java.util.*
 import javax.inject.Inject
 
 class AccountRoutes @Inject constructor(accountDataAccess: AccountDataAccess, auth: Auth) {
@@ -13,7 +12,7 @@ class AccountRoutes @Inject constructor(accountDataAccess: AccountDataAccess, au
         val user = Account(submittedUserAttributes)
         val (hashed, salt) = auth.encrypt(user.password!!)
         val userReadyToSave = Account(submittedUserAttributes
-                .plus(listOf("crypted_password" to hashed, "password_salt" to salt, "created_at" to Date(), "updated_at" to Date()))
+                .plus(listOf("crypted_password" to hashed, "password_salt" to salt))
                 .minus("password"))
         val savedUser = accountDataAccess.insert(userReadyToSave)
         response.status(HttpStatus.CREATED_201)
@@ -27,7 +26,7 @@ class AccountRoutes @Inject constructor(accountDataAccess: AccountDataAccess, au
             val token = auth.generateToken(account)
             mapOf("data" to AuthData(mapOf("email" to authData.email, "token" to token)).toJsonApiObject())
         } else {
-            response.status(401)
+            response.status(HttpStatus.UNAUTHORIZED_401)
             mapOf("errors" to listOf(JsonApiError("Invalid authentication credentials")))
         }
     }
@@ -41,7 +40,7 @@ class AccountRoutes @Inject constructor(accountDataAccess: AccountDataAccess, au
             val account = accountDataAccess.getByEmail(email)
             mapOf("data" to account.toJsonApiObject())
         } catch(e: InvalidJwtException) {
-            response.status(401)
+            response.status(HttpStatus.UNAUTHORIZED_401)
             mapOf("errors" to listOf(JsonApiError("Invalid authentication token")))
         }
     }

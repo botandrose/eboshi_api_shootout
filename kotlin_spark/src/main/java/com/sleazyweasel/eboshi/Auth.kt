@@ -8,7 +8,11 @@ import org.jose4j.jwt.JwtClaims
 import org.jose4j.jwt.consumer.JwtConsumerBuilder
 import org.mindrot.jbcrypt.BCrypt
 
-class Auth {
+private val TOKEN_ISSUER = "Kotlin Eboshi API"
+private val TOKEN_AUDIENCE = "eboshi user"
+private val EMAIL_CLAIM_KEY = "email"
+
+open class Auth {
     private val rsaWebKey: RsaJsonWebKey;
 
     constructor() {
@@ -16,25 +20,25 @@ class Auth {
         rsaWebKey.keyId = "eboshiKey"
     }
 
-    val encrypt = { password: String ->
+    var encrypt = { password: String ->
         val salt = BCrypt.gensalt()
         val hashedPassword = BCrypt.hashpw(password, salt)
         Encrypted(hashedPassword, salt)
     }
 
-    val verify = { plainText: String?, hashedPassword: String? ->
+    var verify = { plainText: String?, hashedPassword: String? ->
         BCrypt.checkpw(plainText, hashedPassword)
     }
 
-    val generateToken = { account: Account ->
+    var generateToken = { account: Account ->
         val claims = JwtClaims()
-        claims.issuer = "Kotlin Eboshi API"
-        claims.audience = listOf("eboshi user")
+        claims.issuer = TOKEN_ISSUER
+        claims.audience = listOf(TOKEN_AUDIENCE)
         claims.setExpirationTimeMinutesInTheFuture(10f)
         claims.setGeneratedJwtId()
         claims.setIssuedAtToNow();
         claims.setNotBeforeMinutesInThePast(2f)
-        claims.setClaim("email", account.email)
+        claims.setClaim(EMAIL_CLAIM_KEY, account.email)
 
         val jws = JsonWebSignature()
         jws.payload = claims.toJson()
@@ -47,16 +51,16 @@ class Auth {
     /**
      * Returns the account email if the token is valid. Otherwise, will throw an InvalidJwtException
      */
-    val validateToken = { token: String ->
+    var validateToken = { token: String ->
         val jwtConsumer = JwtConsumerBuilder()
                 .setRequireExpirationTime()
                 .setAllowedClockSkewInSeconds(30)
-                .setExpectedIssuer("Kotlin Eboshi API")
-                .setExpectedAudience("eboshi user")
+                .setExpectedIssuer(TOKEN_ISSUER)
+                .setExpectedAudience(TOKEN_AUDIENCE)
                 .setVerificationKey(rsaWebKey.key)
                 .build();
         val claims = jwtConsumer.processToClaims(token)
-        claims.getClaimValue("email").toString()
+        claims.getClaimValue(EMAIL_CLAIM_KEY).toString()
     }
 }
 

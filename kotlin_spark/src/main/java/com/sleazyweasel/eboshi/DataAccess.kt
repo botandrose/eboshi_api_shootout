@@ -3,9 +3,9 @@ package com.sleazyweasel.eboshi
 import org.springframework.dao.support.DataAccessUtils
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert
+import java.util.*
 import javax.inject.Inject
 
-//note: open declaration & var declarations here are not desired, but required for Mockito to work correctly, as kotlin makes everything final by default.
 open class ClientDataAccess constructor(private val jdbcTemplate: JdbcTemplate, private val insertClient: SimpleJdbcInsert) {
 
     @Inject constructor(jdbcTemplate: JdbcTemplate) :
@@ -29,8 +29,9 @@ open class AccountDataAccess constructor(private val jdbcTemplate: JdbcTemplate,
     this(jdbcTemplate, SimpleJdbcInsert(jdbcTemplate).withTableName("users").usingGeneratedKeyColumns("id"))
 
     var insert: (Account) -> Account = { account ->
-        val key = insertUser.executeAndReturnKey(account.data).toInt()
-        Account(account.data.plus("id" to key))
+        val initialized = account.data.plus(listOf("created_at" to Date(), "updated_at" to Date()))
+        val key = insertUser.executeAndReturnKey(initialized).toInt()
+        Account(initialized.plus("id" to key))
     }
 
     var get: (Int) -> Account = { id ->
