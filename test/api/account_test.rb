@@ -10,7 +10,7 @@ describe "account API" do
 
   describe "POST /api/account" do
     before do
-      skip_if_impl_in %w(elixir_phoenix haskell_scotty node_express node_hapi python_flask ruby_sinatra clojure_liberator kotlin_spark)
+      skip_if_impl_in %w(elixir_phoenix haskell_scotty node_express node_hapi python_flask ruby_sinatra clojure_liberator)
     end
 
     it "signs up for an account" do
@@ -43,7 +43,7 @@ describe "account API" do
 
   describe "GET /api/account" do
     before do
-      skip_if_impl_in %w(elixir_phoenix haskell_scotty node_express node_hapi python_flask ruby_sinatra clojure_liberator kotlin_spark)
+      skip_if_impl_in %w(elixir_phoenix haskell_scotty node_express node_hapi python_flask ruby_sinatra clojure_liberator)
 
       @token = sign_up_and_authorize_account({
         name: "Micah Geisel",

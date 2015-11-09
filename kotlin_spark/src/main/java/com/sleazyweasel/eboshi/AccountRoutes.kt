@@ -1,6 +1,8 @@
 package com.sleazyweasel.eboshi
 
 import org.eclipse.jetty.http.HttpStatus
+import org.jose4j.jwt.consumer.InvalidJwtException
+import spark.Request
 import spark.Response
 import java.util.*
 import javax.inject.Inject
@@ -21,13 +23,26 @@ class AccountRoutes @Inject constructor(accountDataAccess: AccountDataAccess, au
     val auth = { input: JsonApiRequest, response: Response ->
         val authData = AuthData(input.data.attributes)
         val account = accountDataAccess.getByEmail(authData.email!!)
-        if (!auth.verify(authData.password, account.crypted_password)) {
+        if (auth.verify(authData.password, account.crypted_password)) {
+            val token = auth.generateToken(account)
+            mapOf("data" to AuthData(mapOf("email" to authData.email, "token" to token)).toJsonApiObject())
+        } else {
             response.status(401)
             mapOf("errors" to listOf(JsonApiError("Invalid authentication credentials")))
-        } else {
-            //todo: actually generate a real jwt token!
-            val token = "asdlkj.asldfkj.adlfjk"
-            mapOf("data" to AuthData(mapOf("email" to authData.email, "token" to token)).toJsonApiObject())
+        }
+    }
+
+    val get = { request: Request, response: Response ->
+        val authHeader = request.headers("Authorization")
+        val token = authHeader.substringAfter("Bearer ")
+        val email: String
+        try {
+            email = auth.validateToken(token)
+            val account = accountDataAccess.getByEmail(email)
+            mapOf("data" to account.toJsonApiObject())
+        } catch(e: InvalidJwtException) {
+            response.status(401)
+            mapOf("errors" to listOf(JsonApiError("Invalid authentication token")))
         }
     }
 

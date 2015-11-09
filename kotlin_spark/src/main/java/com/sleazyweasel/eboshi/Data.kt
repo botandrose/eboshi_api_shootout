@@ -8,6 +8,8 @@ data class Client(val data: Map<String, Any?>) {
 
 data class Account(val data: Map<String, Any?>) {
     val id: Int? by data
+    val name: String? by data
+    val email: String? by data
     val password: String? by data
     val crypted_password: String? by data
 }
