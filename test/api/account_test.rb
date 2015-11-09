@@ -43,7 +43,7 @@ describe "account API" do
 
   describe "GET /api/account" do
     before do
-      skip_if_impl_in %w(crystal_kemal elixir_phoenix haskell_scotty node_express node_hapi python_flask ruby_sinatra clojure_liberator)
+      skip_if_impl_in %w(clojure_liberator crystal_kemal elixir_phoenix node_express node_hapi python_flask ruby_sinatra)
 
       @token = sign_up_and_authorize_account({
         name: "Micah Geisel",
