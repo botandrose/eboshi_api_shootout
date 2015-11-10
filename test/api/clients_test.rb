@@ -8,7 +8,7 @@ describe "clients resource API" do
 
   describe "GET /api/clients" do
     before do
-      skip_if_impl_in %w(crystal_kemal node_express)
+      skip_if_impl_in %w(node_express)
 
       db.seed(<<-SQL)
         INSERT INTO clients SET
