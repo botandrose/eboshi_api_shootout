@@ -4,3 +4,7 @@ shards:
     github: botandrose/kemal
     commit: dea9b2f663b2a5c0909da4112aaccd6a570edd91
 
+  mysql:
+    github: waterlink/crystal-mysql
+    version: 0.3.0
+

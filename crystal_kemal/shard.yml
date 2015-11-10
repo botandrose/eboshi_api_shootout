@@ -10,4 +10,7 @@ dependencies:
   kemal:
     github: botandrose/kemal
     branch: get_json_with_no_request_body
+  mysql:
+    github: waterlink/crystal-mysql
+    version: 0.3.0
 
