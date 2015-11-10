@@ -1,9 +1,12 @@
 require "mysql"
 
 class Client
+  def self.connection
+    @@connection ||= MySQL.connect("127.0.0.1", "root", "", "eboshi_test", 3306_u16, nil)
+  end
+
   def self.all
-    conn = MySQL.connect("127.0.0.1", "root", "", "eboshi_test", 3306_u16, nil)
-    conn.query("SELECT * FROM clients").not_nil!.map do |row|
+    connection.query("SELECT * FROM clients").not_nil!.map do |row|
       {
         type: "clients",
         id: row.shift.to_s,
