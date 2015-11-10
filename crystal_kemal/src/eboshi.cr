@@ -9,7 +9,7 @@ get "/api/test" do
 end
 
 get "/api/clients" do
-  { data: Client.all }.to_json
+  { data: Client.all.map(&.as_json_api_hash) }.to_json
 end
 
 Signal::INT.trap { exit }
