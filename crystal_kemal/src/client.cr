@@ -7,10 +7,9 @@ class Client
 
   def self.all
     connection.query("SELECT * FROM clients").not_nil!.map do |row|
-      fields = %i(id name address city state zip country email contact phone created_at updated_at)
       attributes = {} of Symbol => MySQL::Types::SqlType
       row.not_nil!.size.times do |index|
-        attributes[fields[index]] = row[index]
+        attributes[@@fields[index]] = row[index]
       end
       new attributes
     end
@@ -20,7 +19,11 @@ class Client
     @attributes = attributes
   end
 
+  @@fields = [] of Symbol
+
   macro attribute(field, type)
+    @@fields.push :{{field}}
+
     def {{field}}
       @attributes[:{{field}}] as {{type}}
     end
