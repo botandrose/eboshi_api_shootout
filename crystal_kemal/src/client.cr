@@ -8,7 +8,7 @@ class Client
   def self.all
     connection.query("SELECT * FROM clients").not_nil!.map do |row|
       fields = %i(id name address city state zip country email contact phone created_at updated_at)
-      attributes = {} of Symbol => (Nil | String | Int32 | Int64 | Float64 | Bool | Time | MySQL::Types::Date)
+      attributes = {} of Symbol => MySQL::Types::SqlType
       row.not_nil!.size.times do |index|
         attributes[fields[index]] = row[index]
       end
@@ -20,57 +20,28 @@ class Client
     @attributes = attributes
   end
 
-  def id
-    @attributes[:id] as Int32
+  macro attribute(field, type)
+    def {{field}}
+      @attributes[:{{field}}] as {{type}}
+    end
   end
 
-  def name
-    @attributes[:name] as String
-  end
-
-  def address
-    @attributes[:address] as String
-  end
-
-  def city
-    @attributes[:city] as String
-  end
-
-  def state
-    @attributes[:state] as String
-  end
-
-  def zip
-    @attributes[:zip] as String
-  end
-
-  def country
-    @attributes[:country] as String
-  end
-
-  def email
-    @attributes[:email] as String
-  end
-
-  def contact
-    @attributes[:contact] as String
-  end
-
-  def phone
-    @attributes[:phone] as String
-  end
-
-  def created_at
-    @attributes[:created_at] as Time
-  end
-
-  def updated_at
-    @attributes[:updated_at] as Time
-  end
+  attribute id, Int32
+  attribute name, String
+  attribute address, String
+  attribute city, String
+  attribute state, String
+  attribute zip, String
+  attribute country, String
+  attribute email, String
+  attribute contact, String
+  attribute phone, String
+  attribute created_at, Time
+  attribute updated_at, Time
 
   def as_json_api_hash
     {
-      type: "clients",
+      type: self.class.inspect.downcase + "s",
       id: id.to_s,
       attributes: {
         name: name,
