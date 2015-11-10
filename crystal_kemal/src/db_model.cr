@@ -1,20 +1,10 @@
 require "mysql"
+require "./db_model/db_access"
 require "./db_model/serialization"
 
-class DBModel
-  def self.connection
-    @@connection ||= MySQL.connect("127.0.0.1", "root", "", "eboshi_test", 3306_u16, nil)
-  end
-
-  def self.all
-    connection.query("SELECT * FROM #{table_name}").not_nil!.map do |row|
-      attributes = {} of Symbol => MySQL::Types::SqlType
-      row.not_nil!.size.times do |index|
-        attributes[fields[index]] = row[index]
-      end
-      new attributes
-    end
-  end
+class DBModel::Base
+  extend DBAccess
+  include Serialization
 
   def initialize attributes
     @attributes = attributes
@@ -39,7 +29,5 @@ class DBModel
       @attributes[:{{field}}] as {{type}}
     end
   end
-
-  include Serialization
 end
 

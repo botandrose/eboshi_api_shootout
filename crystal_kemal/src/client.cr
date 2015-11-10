@@ -1,6 +1,6 @@
 require "./db_model"
 
-class Client < DBModel
+class Client < DBModel::Base
   self.table_name = "clients"
 
   attribute id, Int32

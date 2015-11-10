@@ -1,4 +1,4 @@
-class DBModel
+module DBModel
   module Serialization
     def as_json_api_hash
       attributes = {} of Symbol => String
