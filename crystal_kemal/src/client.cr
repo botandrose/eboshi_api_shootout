@@ -1,7 +1,7 @@
 require "./db_model"
 
 class Client < DBModel
-  @@table_name = "clients"
+  self.table_name = "clients"
 
   attribute id, Int32
   attribute name, String

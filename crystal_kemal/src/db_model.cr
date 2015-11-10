@@ -6,7 +6,7 @@ class DBModel
   end
 
   def self.all
-    connection.query("SELECT * FROM #{@@table_name}").not_nil!.map do |row|
+    connection.query("SELECT * FROM #{table_name}").not_nil!.map do |row|
       attributes = {} of Symbol => MySQL::Types::SqlType
       row.not_nil!.size.times do |index|
         attributes[fields[index]] = row[index]
@@ -21,6 +21,14 @@ class DBModel
 
   def self.fields
     @@fields ||= [] of Symbol
+  end
+
+  def self.table_name
+    @@table_name
+  end
+
+  def self.table_name= value
+    @@table_name = value
   end
 
   macro attribute(field, type)
@@ -44,7 +52,7 @@ class DBModel
     end
 
     {
-      type: @@table_name,
+      type: self.class.table_name,
       id: id.to_s,
       attributes: attributes,
     }
