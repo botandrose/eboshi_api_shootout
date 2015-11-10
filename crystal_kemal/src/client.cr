@@ -20,24 +20,70 @@ class Client
     @attributes = attributes
   end
 
-  getter attributes
+  def id
+    @attributes[:id] as Int32
+  end
+
+  def name
+    @attributes[:name] as String
+  end
+
+  def address
+    @attributes[:address] as String
+  end
+
+  def city
+    @attributes[:city] as String
+  end
+
+  def state
+    @attributes[:state] as String
+  end
+
+  def zip
+    @attributes[:zip] as String
+  end
+
+  def country
+    @attributes[:country] as String
+  end
+
+  def email
+    @attributes[:email] as String
+  end
+
+  def contact
+    @attributes[:contact] as String
+  end
+
+  def phone
+    @attributes[:phone] as String
+  end
+
+  def created_at
+    @attributes[:created_at] as Time
+  end
+
+  def updated_at
+    @attributes[:updated_at] as Time
+  end
 
   def as_json_api_hash
     {
       type: "clients",
-      id: attributes[:id].to_s,
+      id: id.to_s,
       attributes: {
-        name: attributes[:name].to_s,
-        address: attributes[:address].to_s,
-        city: attributes[:city].to_s,
-        state: attributes[:state].to_s,
-        zip: attributes[:zip].to_s,
-        country: attributes[:country].to_s,
-        email: attributes[:email].to_s,
-        contact: attributes[:contact].to_s,
-        phone: attributes[:phone].to_s,
-        created_at: (attributes[:created_at] as Time).to_s("%FT%TZ"),
-        updated_at: (attributes[:updated_at] as Time).to_s("%FT%TZ"),
+        name: name,
+        address: address,
+        city: city,
+        state: state,
+        zip: zip,
+        country: country,
+        email: email,
+        contact: contact,
+        phone: phone,
+        created_at: created_at.to_s("%FT%TZ"),
+        updated_at: updated_at.to_s("%FT%TZ"),
       }
     }
   end
