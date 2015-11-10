@@ -1,0 +1,13 @@
+name: eboshi
+version: 0.1.0
+
+author:
+  - Micah Geisel <micah@botandrose.com>
+
+license: MIT
+
+dependencies:
+  kemal:
+    github: botandrose/kemal
+    branch: get_json_with_no_request_body
+
