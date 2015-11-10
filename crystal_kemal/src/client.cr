@@ -6,7 +6,7 @@ class Client
   end
 
   def self.all
-    connection.query("SELECT * FROM clients").not_nil!.map do |row|
+    connection.query("SELECT * FROM #{@@table_name}").not_nil!.map do |row|
       attributes = {} of Symbol => MySQL::Types::SqlType
       row.not_nil!.size.times do |index|
         attributes[@@fields[index]] = row[index]
@@ -18,6 +18,8 @@ class Client
   def initialize attributes
     @attributes = attributes
   end
+
+  @@table_name = "clients"
 
   @@fields = [] of Symbol
 
@@ -44,7 +46,7 @@ class Client
 
   def as_json_api_hash
     {
-      type: self.class.inspect.downcase + "s",
+      type: @@table_name,
       id: id.to_s,
       attributes: {
         name: name,
