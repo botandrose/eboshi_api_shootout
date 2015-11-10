@@ -45,22 +45,21 @@ class Client
   attribute updated_at, Time
 
   def as_json_api_hash
+    attributes = {} of Symbol => String
+    @@fields.each do |field|
+      next if field == :id
+      value = @attributes[field]
+      if value.is_a? Time
+        attributes[field] = value.to_s("%FT%TZ")
+      else
+        attributes[field] = value.to_s
+      end
+    end
+
     {
       type: @@table_name,
       id: id.to_s,
-      attributes: {
-        name: name,
-        address: address,
-        city: city,
-        state: state,
-        zip: zip,
-        country: country,
-        email: email,
-        contact: contact,
-        phone: phone,
-        created_at: created_at.to_s("%FT%TZ"),
-        updated_at: updated_at.to_s("%FT%TZ"),
-      }
+      attributes: attributes,
     }
   end
 end
