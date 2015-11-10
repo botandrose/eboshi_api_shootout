@@ -1,6 +1,6 @@
 module DBModel
   module Serialization
-    def as_json_api_hash
+    def serialize
       attributes = {} of Symbol => String
       self.class.fields.each do |field|
         next if field == :id
