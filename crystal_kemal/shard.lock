@@ -1,0 +1,6 @@
+version: 1.0
+shards:
+  kemal:
+    github: botandrose/kemal
+    commit: dea9b2f663b2a5c0909da4112aaccd6a570edd91
+
