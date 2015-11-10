@@ -1,0 +1,4 @@
+#!/bin/sh
+find . -maxdepth 1 -mindepth 1 ! -name 'bin' ! -name 'test' ! -name '.git' ! -name '.idea' -type d | cut -b3- | while read filename; do
+  echo "$(git log -1 --format="%ct" -- $filename) $filename"
+done | sort -nr | cut -b12-
