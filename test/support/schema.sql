@@ -27,3 +27,20 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `line_items`;
+CREATE TABLE `line_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `start` datetime DEFAULT NULL,
+  `finish` datetime DEFAULT NULL,
+  `rate` decimal(10,2) DEFAULT NULL,
+  `notes` text,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `invoice_id` int(11) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

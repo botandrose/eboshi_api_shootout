@@ -9,6 +9,8 @@ module MustEqualJson
       [a.length, b.length].max.times do |index|
         compare a[index], b[index]
       end
+    when Float, NilClass
+      a.must_equal b
     else
       a.must_match b
     end
