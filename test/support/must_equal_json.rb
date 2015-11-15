@@ -1,5 +1,9 @@
 module MustEqualJson
   def self.compare a, b
+    if b.is_a?(Class)
+      return a.must_be_kind_of b
+    end
+
     case a
     when Hash
       (a.keys + b.keys.map(&:to_s)).uniq.each do |key|
