@@ -29,19 +29,6 @@ data Auth = Auth {
   password :: String
 } deriving (Data, Typeable)
 
-userIdFromHeader :: Text -> Maybe Int
-userIdFromHeader header =
-  let token = replace "Bearer " "" header
-      jwtMaybe = decodeAndVerifySignature (secret "fart69") (toStrict token) in
-  fmap (extractIdFromPayload . unregisteredClaims . claims) jwtMaybe
-
-extractIdFromPayload :: ClaimsMap -> Int
-extractIdFromPayload claims =
-  let idValue = fromJust $ Map.lookup "id" claims
-      userIdResult = fromJSON $ idValue
-  in case (userIdResult :: Result Int) of
-    Success userId -> userId
-
 jwtToken auth =
   let key = secret "fart69"
       iss = stringOrURI "Eboshi"

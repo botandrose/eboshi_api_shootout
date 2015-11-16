@@ -12,16 +12,7 @@ import JSONAPIResponse (dataResponse)
 import Data.Aeson hiding (json)
 import Data.Maybe
 import Data.Text.Lazy
-
-maybeToMonad :: Monad m => Maybe a -> (a -> m (Maybe b)) -> m (Maybe b)
-maybeToMonad valueMaybe action =
-  case valueMaybe of
-    Just value -> action value
-    Nothing -> return Nothing
-
-getCurrentAccount :: Text -> IO (Maybe Account)
-getCurrentAccount authHeader =
-  maybeToMonad (userIdFromHeader authHeader) findAccount
+import CurrentAccount
 
 main :: IO ()
 main = scotty 6969 $ do
@@ -29,8 +20,7 @@ main = scotty 6969 $ do
     html "Hello world"
 
   get "/api/account" $ do
-    headerMaybe <- header "Authorization"
-    accountMaybe <- maybeToMonad headerMaybe (liftIO . getCurrentAccount)
+    accountMaybe <- currentAccount
     case accountMaybe of
       Just account -> do
         jsonAPI account
