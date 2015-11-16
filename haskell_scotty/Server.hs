@@ -13,10 +13,9 @@ import Data.Aeson hiding (json)
 import Data.Maybe
 import Data.Text.Lazy
 
-getCurrentAccount :: ActionM (Maybe Account)
-getCurrentAccount = do
-  authorizationMaybe <- header "Authorization"
-  case authorizationMaybe >>= userIdFromHeader of
+getCurrentAccount :: Maybe Text -> ActionM (Maybe Account)
+getCurrentAccount headerMaybe = do
+  case headerMaybe >>= userIdFromHeader of
     Just userId -> liftIO $ findAccount $ userId
     Nothing -> return Nothing
 
@@ -26,7 +25,8 @@ main = scotty 6969 $ do
     html "Hello world"
 
   get "/api/account" $ do
-    accountMaybe <- getCurrentAccount
+    headerMaybe <- header "Authorization"
+    accountMaybe <- getCurrentAccount headerMaybe
     case accountMaybe of
       Just account -> do
         jsonAPI account
