@@ -15,19 +15,18 @@ import Encryption
 import Web.JWT hiding (decode)
 import Data.Maybe
 
-authenticateAccount :: Auth -> IO Auth
+authenticateAccount :: Auth -> IO (Maybe Auth)
 authenticateAccount auth = do
   conn <- connectDB
   results <- query conn "SELECT id FROM users WHERE email=? AND crypted_password=?" (email auth, encryptPassword $ password $ auth)
   case results of
-    [Only userId] -> return auth { Auth.userId = userId, isValid = True }
-    _ -> return auth
+    [Only userId] -> return (Just auth { Auth.userId = userId })
+    _ -> return Nothing
 
 data Auth = Auth {
   userId :: Int,
   email :: String,
-  password :: String,
-  isValid :: Bool
+  password :: String
 } deriving (Data, Typeable)
 
 userIdFromHeader :: Text -> Maybe Int
@@ -63,8 +62,7 @@ instance FromJSON Auth where
     Auth <$>
       (parseJSON $ Number $ 0) <*>
       (attributes >>= (.: "email")) <*>
-      (attributes >>= (.: "password")) <*>
-      (parseJSON $ toJSON $ False)
+      (attributes >>= (.: "password"))
   parseJSON _ = error "unexpected non-object JSON"
 
 invalidAuthCredentialsError = do

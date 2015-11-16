@@ -47,12 +47,12 @@ main = scotty 6969 $ do
 
   post "/api/auth" $ do
     auth <- jsonData
-    auth' <- liftIO $ authenticateAccount auth
-    if isValid auth'
-      then do
+    authMaybe <- liftIO $ authenticateAccount auth
+    case authMaybe of
+      Just auth' -> do
         jsonAPI auth'
         status status200
-      else do
+      Nothing -> do
         json $ invalidAuthCredentialsError
         status status401
 
