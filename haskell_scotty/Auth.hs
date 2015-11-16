@@ -26,15 +26,17 @@ authenticateAccount auth = do
 data Auth = Auth {
   userId :: Int,
   email :: String,
-  password :: String
+  password :: String,
+  key :: Text
 } deriving (Data, Typeable)
 
+jwtToken :: Auth -> JSON
 jwtToken auth =
-  let key = secret "fart69"
+  let secretKey = secret $ toStrict $ key auth
       iss = stringOrURI "Eboshi"
       payload = Map.fromList [("id", toJSON $ userId $ auth)]
       claims = def { iss = iss, unregisteredClaims = payload }
-  in encodeSigned HS256 key claims
+  in encodeSigned HS256 secretKey claims
 
 instance ToJSON Auth where
   toJSON auth = object [
@@ -49,7 +51,8 @@ instance FromJSON Auth where
     Auth <$>
       (parseJSON $ Number $ 0) <*>
       (attributes >>= (.: "email")) <*>
-      (attributes >>= (.: "password"))
+      (attributes >>= (.: "password")) <*>
+      (parseJSON $ "")
   parseJSON _ = error "unexpected non-object JSON"
 
 invalidAuthCredentialsError = do

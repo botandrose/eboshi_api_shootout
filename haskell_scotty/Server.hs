@@ -16,11 +16,13 @@ import CurrentAccount
 
 main :: IO ()
 main = scotty 6969 $ do
+  let key = "fart69"
+
   get "/api/test" $ do
     html "Hello world"
 
   get "/api/account" $ do
-    accountMaybe <- currentAccount
+    accountMaybe <- currentAccount key
     case accountMaybe of
       Just account -> do
         jsonAPI account
@@ -40,7 +42,8 @@ main = scotty 6969 $ do
     authMaybe <- liftIO $ authenticateAccount auth
     case authMaybe of
       Just auth' -> do
-        jsonAPI auth'
+        let auth'' = auth' { Auth.key = key }
+        jsonAPI auth''
         status status200
       Nothing -> do
         json $ invalidAuthCredentialsError

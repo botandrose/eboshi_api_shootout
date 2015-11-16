@@ -13,10 +13,10 @@ import Data.Maybe
 import qualified Data.Map as Map
 import Data.Aeson
 
-currentAccount :: ActionM (Maybe Account)
-currentAccount = do
+currentAccount :: Text -> ActionM (Maybe Account)
+currentAccount key = do
   headerMaybe <- header "Authorization"
-  maybeToMonad headerMaybe (liftIO . findAccountFromHeader)
+  maybeToMonad headerMaybe (liftIO . findAccountFromKeyAndHeader key)
 
 maybeToMonad :: Monad m => Maybe a -> (a -> m (Maybe b)) -> m (Maybe b)
 maybeToMonad valueMaybe action =
@@ -24,14 +24,14 @@ maybeToMonad valueMaybe action =
     Just value -> action value
     Nothing -> return Nothing
 
-findAccountFromHeader :: Text -> IO (Maybe Account)
-findAccountFromHeader authHeader =
-  maybeToMonad (userIdFromHeader authHeader) findAccount
+findAccountFromKeyAndHeader :: Text -> Text -> IO (Maybe Account)
+findAccountFromKeyAndHeader key authHeader =
+  maybeToMonad (userIdFromKeyAndHeader key authHeader) findAccount
 
-userIdFromHeader :: Text -> Maybe Int
-userIdFromHeader header =
+userIdFromKeyAndHeader :: Text -> Text -> Maybe Int
+userIdFromKeyAndHeader key header =
   let token = replace "Bearer " "" header
-      jwtMaybe = decodeAndVerifySignature (secret "fart69") (toStrict token) in
+      jwtMaybe = decodeAndVerifySignature (secret (toStrict key)) (toStrict token) in
   fmap (extractIdFromPayload . unregisteredClaims . claims) jwtMaybe
 
 extractIdFromPayload :: ClaimsMap -> Int
