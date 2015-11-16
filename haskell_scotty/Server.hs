@@ -16,10 +16,7 @@ import Data.Text.Lazy
 getCurrentAccount :: ActionM (Maybe Account)
 getCurrentAccount = do
   authorizationMaybe <- header "Authorization"
-  let userIdMaybe = do
-                      authorization <- authorizationMaybe
-                      userIdFromHeader authorization
-  case userIdMaybe of
+  case authorizationMaybe >>= userIdFromHeader of
     Just userId -> liftIO $ findAccount $ userId
     Nothing -> return Nothing
 
