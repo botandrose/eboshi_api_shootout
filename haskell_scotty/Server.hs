@@ -12,24 +12,24 @@ import Data.Aeson hiding (json)
 import Data.Maybe
 import Data.Text.Lazy
 
+getCurrentAccount :: ActionM (Maybe Account)
+getCurrentAccount = do
+  authorizationMaybe <- header "Authorization"
+  case authorizationMaybe of
+    Just authorization -> liftIO $ findAccount $ userIdFromHeader authorization
+    Nothing -> return Nothing
+
 main :: IO ()
 main = scotty 6969 $ do
   get "/api/test" $ do
     html "Hello world"
 
   get "/api/account" $ do
-    authorizationMaybe <- header "Authorization"
-    case authorizationMaybe of
-      Just authHeader -> do
-        let userId = userIdFromHeader authHeader
-        accountMaybe <- liftIO $ findAccount userId
-        case accountMaybe of
-          Just account -> do
-            jsonAPI account
-            status status200
-          Nothing -> do
-            json invalidAuthTokenError
-            status status401
+    accountMaybe <- getCurrentAccount
+    case accountMaybe of
+      Just account -> do
+        jsonAPI account
+        status status200
       Nothing -> do
         json invalidAuthTokenError
         status status401
