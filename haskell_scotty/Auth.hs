@@ -33,8 +33,8 @@ data Auth = Auth {
 userIdFromHeader :: Text -> Maybe Int
 userIdFromHeader header =
   let token = replace "Bearer " "" header
-      mJwt = decodeAndVerifySignature (secret "fart69") (toStrict token) in
-  fmap (extractIdFromPayload . unregisteredClaims . claims) mJwt
+      jwtMaybe = decodeAndVerifySignature (secret "fart69") (toStrict token) in
+  fmap (extractIdFromPayload . unregisteredClaims . claims) jwtMaybe
 
 extractIdFromPayload :: ClaimsMap -> Int
 extractIdFromPayload claims =
