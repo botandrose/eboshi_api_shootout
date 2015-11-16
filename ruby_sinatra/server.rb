@@ -26,6 +26,114 @@ get '/api/test' do
   "Hello world"
 end
 
+get '/api/clients/:client_id/line_items' do
+  content_type :json
+  line_items = db.query("SELECT * FROM line_items WHERE client_id=#{params[:client_id]}")
+  line_items_data = line_items.map do |line_item|
+    line_item['user_id'] = line_item['user_id'].to_s
+    line_item['client_id'] = line_item['client_id'].to_s
+    line_item['rate'] = line_item['rate'].to_f
+    line_item['hours'] = (line_item['finish'] - line_item['start']) / 60 / 60
+    line_item['total'] = line_item['hours'] * line_item['rate']
+
+    line_item['start'] = line_item['start'].iso8601
+    line_item['finish'] = line_item['finish'].iso8601
+    line_item['created_at'] = line_item['created_at'].iso8601
+    line_item['updated_at'] = line_item['updated_at'].iso8601
+    {
+      type: 'line_items',
+      id: line_item.delete('id').to_s,
+      attributes: line_item,
+    }
+  end
+  { data: line_items_data }.to_json
+end
+
+patch '/api/clients/:client_id/clock_in' do
+  content_type :json
+
+  payload = JSON.load(request.body.read)
+  token = (request.env["HTTP_AUTHORIZATION"] || "")[/^Bearer (.+)$/, 1]
+  decoded_token = JWT.decode token, "omgponies"
+  user = User.find(decoded_token.first["id"])
+  current_user_id = user.id
+
+  now = Time.now
+  rate = payload["data"]["attributes"]["rate"]
+  payload = JSON.load(request.body.read)
+  notes = payload["data"]["attributes"]["notes"]
+
+  db.query(<<-SQL)
+  INSERT INTO line_items SET
+    client_id=#{params[:client_id]},
+    user_id=#{current_user_id},
+    start='#{now}',
+    rate=#{rate},
+    notes='#{notes}',
+    created_at='#{now}',
+    updated_at='#{now}',
+    type='LineItem';
+  SQL
+
+  line_items = db.query("SELECT * FROM line_items ORDER BY id DESC LIMIT 1")
+  line_items = line_items.map do |line_item|
+    line_item['user_id'] = line_item['user_id'].to_s
+    line_item['client_id'] = line_item['client_id'].to_s
+    line_item['rate'] = line_item['rate'].to_f
+    line_item['start'] = line_item['start'].iso8601
+    line_item['created_at'] = line_item['created_at'].iso8601
+    line_item['updated_at'] = line_item['updated_at'].iso8601
+    {
+      type: 'line_items',
+      id: line_item.delete('id').to_s,
+      attributes: line_item,
+    }
+  end
+  { data: line_items.first }.to_json
+end
+
+patch '/api/clients/:client_id/clock_out' do
+  token = (request.env["HTTP_AUTHORIZATION"] || "")[/^Bearer (.+)$/, 1]
+  decoded_token = JWT.decode token, "omgponies"
+  user = User.find(decoded_token.first["id"])
+  current_user_id = user.id
+
+  payload = JSON.load(request.body.read)
+  notes = payload["data"]["attributes"]["notes"]
+  now = Time.now
+
+  db.query(<<-SQL)
+  UPDATE line_items SET
+    notes='#{notes}',
+    finish='#{now}',
+    updated_at='#{now}'
+  WHERE
+    client_id=#{params[:client_id]} AND
+    user_id=#{current_user_id} AND
+    finish IS NULL;
+  SQL
+
+  line_items = db.query("SELECT * FROM line_items ORDER BY id DESC LIMIT 1")
+  line_items = line_items.map do |line_item|
+    line_item['user_id'] = line_item['user_id'].to_s
+    line_item['client_id'] = line_item['client_id'].to_s
+    line_item['rate'] = line_item['rate'].to_f
+    line_item['hours'] = (line_item['finish'] - line_item['start']) / 60 / 60
+    line_item['total'] = line_item['hours'] * line_item['rate']
+
+    line_item['start'] = line_item['start'].iso8601
+    line_item['finish'] = line_item['finish'].iso8601
+    line_item['created_at'] = line_item['created_at'].iso8601
+    line_item['updated_at'] = line_item['updated_at'].iso8601
+    {
+      type: 'line_items',
+      id: line_item.delete('id').to_s,
+      attributes: line_item,
+    }
+  end
+  { data: line_items.first }.to_json
+end
+
 get '/api/greet' do
   begin
     token = (request.env["HTTP_AUTHORIZATION"] || "")[/^Bearer (.+)$/, 1]
@@ -88,20 +196,19 @@ end
 
 post '/api/account' do
   payload = JSON.load(request.body.read)
-  ids = payload["data"].map do |user_attrs|
-    password = user_attrs["attributes"].delete("password")
-    salt = SecureRandom.hex(127)
-    query = user_attrs["attributes"].map do |key, value|
-      "`#{key}`='#{value}'"
-    end.join(', ')
-    crypted_password = Encrypter.encrypt(password, salt)
-    query += ", crypted_password='#{crypted_password}'"
-    query += ", password_salt='#{salt}'"
-    query += ", created_at=NOW()"
-    query += ", updated_at=NOW()"
-    db.query("INSERT INTO users SET #{query};")
-    db.last_id
-  end
+  user_attrs = payload["data"]["attributes"]
+  password = user_attrs.delete("password")
+  salt = SecureRandom.hex(127)
+  query = user_attrs.map do |key, value|
+    "`#{key}`='#{value}'"
+  end.join(', ')
+  crypted_password = Encrypter.encrypt(password, salt)
+  query += ", crypted_password='#{crypted_password}'"
+  query += ", password_salt='#{salt}'"
+  query += ", created_at=NOW()"
+  query += ", updated_at=NOW()"
+  db.query("INSERT INTO users SET #{query};")
+  ids = [db.last_id]
 
   users = db.query("SELECT * FROM users WHERE id in (#{ids.join(", ")})")
 
@@ -123,16 +230,16 @@ end
 
 post '/api/auth' do
   payload = JSON.load(request.body.read)
-  auth = Auth.new(payload["data"].first["attributes"])
+  auth = Auth.new(payload["data"]["attributes"])
   if auth.valid?
     status 200
-    { data: [{
+    { data: {
       type: "auth",
       attributes: {
         email: auth.email,
         token: auth.token,
       },
-    }]}.to_json
+    }}.to_json
   else
     status 403
     { errors: [

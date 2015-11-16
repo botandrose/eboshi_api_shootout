@@ -23,6 +23,3 @@ DEPENDENCIES
   jwt
   mysql2
   sinatra
-
-BUNDLED WITH
-   1.10.6
