@@ -23,13 +23,11 @@ saveAccount account = do
   let [Only accountId] = results
   return account' { Account.id = accountId }
 
-findAccount :: Int -> IO Account
+findAccount :: Int -> IO (Maybe Account)
 findAccount userId = do
   conn <- connectDB
   accountResults <- query conn "SELECT id, name, email, crypted_password, created_at, updated_at FROM users WHERE id=?" (Only userId)
   case accountResults of
-    [] -> do
-      let defaultDate = (UTCTime (ModifiedJulianDay 0) 0)
-      return $ Account 0 "" "" "" defaultDate defaultDate
-    [account] -> return $ account
+    [account] -> return $ Just account
+    [] -> return Nothing
 

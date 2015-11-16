@@ -22,15 +22,15 @@ main = scotty 6969 $ do
     case authorizationMaybe of
       Just authHeader -> do
         let userId = userIdFromHeader authHeader
-        account <- liftIO $ findAccount userId
-        case Account.id account of
-          0 -> do
-            json invalidAuthTokenError
-            status status401
-          _ -> do
+        accountMaybe <- liftIO $ findAccount userId
+        case accountMaybe of
+          Just account -> do
             jsonAPI account
             status status200
-      _ -> do
+          Nothing -> do
+            json invalidAuthTokenError
+            status status401
+      Nothing -> do
         json invalidAuthTokenError
         status status401
 
