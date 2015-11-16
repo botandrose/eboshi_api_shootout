@@ -6,6 +6,7 @@ import ClientRepo
 import AccountRepo
 import Account
 import Auth
+import Control.Applicative
 import Control.Monad.IO.Class
 import JSONAPIResponse (dataResponse)
 import Data.Aeson hiding (json)
@@ -15,8 +16,11 @@ import Data.Text.Lazy
 getCurrentAccount :: ActionM (Maybe Account)
 getCurrentAccount = do
   authorizationMaybe <- header "Authorization"
-  case authorizationMaybe of
-    Just authorization -> liftIO $ findAccount $ userIdFromHeader authorization
+  let userIdMaybe = do
+                      authorization <- authorizationMaybe
+                      userIdFromHeader authorization
+  case userIdMaybe of
+    Just userId -> liftIO $ findAccount $ userId
     Nothing -> return Nothing
 
 main :: IO ()

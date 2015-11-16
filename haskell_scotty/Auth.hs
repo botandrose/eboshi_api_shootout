@@ -30,13 +30,11 @@ data Auth = Auth {
   isValid :: Bool
 } deriving (Data, Typeable)
 
-userIdFromHeader :: Text -> Int
+userIdFromHeader :: Text -> Maybe Int
 userIdFromHeader header =
   let token = replace "Bearer " "" header
-      mJwt = decodeAndVerifySignature (secret "fart69") (toStrict token)
-  in case mJwt of
-    Just jwt -> extractIdFromPayload $ unregisteredClaims $ claims $ jwt
-    _ -> 0
+      mJwt = decodeAndVerifySignature (secret "fart69") (toStrict token) in
+  fmap (extractIdFromPayload . unregisteredClaims . claims) mJwt
 
 extractIdFromPayload :: ClaimsMap -> Int
 extractIdFromPayload claims =
