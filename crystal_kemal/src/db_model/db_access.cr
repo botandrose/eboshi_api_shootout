@@ -6,7 +6,7 @@ module DBModel
 
     def all
       connection.query("SELECT * FROM #{table_name}").not_nil!.map do |row|
-        attributes = {} of Symbol => MySQL::Types::SqlType
+        attributes = {} of String => MySQL::Types::SqlType
         row.not_nil!.size.times do |index|
           attributes[fields[index]] = row[index]
         end
