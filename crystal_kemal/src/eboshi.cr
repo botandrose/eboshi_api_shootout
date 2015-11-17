@@ -13,26 +13,12 @@ get "/api/clients" do
 end
 
 post "/api/clients" do |env|
+  data = env.params["data"] as Hash
+  attributes = data["attributes"] as Hash
+  client = Client.create(attributes)
+
   env.status_code = 201
-  {
-    data: {
-      type: "clients",
-      id: "1",
-      attributes: {
-        name: "Bot and Rose Design",
-        address: "625 NW Everett St",
-        city: "Portland",
-        state: "OR",
-        zip: "97209",
-        country: "USA",
-        email: "info@botandrose.com",
-        contact: "Michael Gubitosa",
-        phone: "(503) 662-2712",
-        created_at: "2006-06-25T14:08:31Z",
-        updated_at: "2015-08-29T09:58:23Z",
-      }
-    }
-  }.to_json
+  { data: client.serialize }.to_json
 end
 
 Signal::INT.trap { exit }
