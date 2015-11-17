@@ -13,15 +13,23 @@ import Data.Aeson hiding (json)
 import Data.Maybe
 import Data.Text.Lazy
 import CurrentAccount
+import System.Environment (lookupEnv)
+
+getKey :: IO Text
+getKey = do
+  keyMaybe <- lookupEnv "EBOSHI_API_KEY"
+  case keyMaybe of
+    Just k -> return $ pack k
+    Nothing -> error "eboshi: EBOSHI_API_KEY not set"
 
 main :: IO ()
 main = scotty 6969 $ do
-  let key = "fart69"
 
   get "/api/test" $ do
     html "Hello world"
 
   get "/api/account" $ do
+    key <- liftIO getKey
     accountMaybe <- currentAccount key
     case accountMaybe of
       Just account -> do
@@ -42,6 +50,7 @@ main = scotty 6969 $ do
     authMaybe <- liftIO $ authenticateAccount auth
     case authMaybe of
       Just auth' -> do
+        key <- liftIO getKey
         let auth'' = auth' { Auth.key = key }
         jsonAPI auth''
         status status200
