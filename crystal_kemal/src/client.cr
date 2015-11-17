@@ -15,22 +15,5 @@ class Client < DBModel::Base
   attribute phone, String
   attribute created_at, Time
   attribute updated_at, Time
-
-  def self.create attributes
-    query = String.build do |str|
-      str << "INSERT INTO #{table_name} SET "
-      fields_fragment = fields.map do |field|
-        next if field == "id"
-        %(`#{field}`="#{attributes[field]}")
-      end
-      fields_fragment.shift
-      str << fields_fragment.join(", ")
-      str << ";"
-    end
-
-    connection.query query
-    id = connection.insert_id as UInt64
-    find id
-  end
 end
 

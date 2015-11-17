@@ -4,6 +4,13 @@ module DBModel
       @@connection ||= MySQL.connect("127.0.0.1", "root", "", "eboshi_test", 3306_u16, nil)
     end
 
+    def create attributes
+      query = build_query(attributes)
+      connection.query query
+      id = connection.insert_id as UInt64
+      find id
+    end
+
     def all
       results = connection.query("SELECT * FROM #{table_name}")
       materialize_results(results)
@@ -21,6 +28,19 @@ module DBModel
           attributes[fields[index]] = row[index]
         end
         new attributes
+      end
+    end
+
+    private def build_query attributes
+      String.build do |str|
+        str << "INSERT INTO #{table_name} SET "
+        fields_fragment = fields.map do |field|
+          next if field == "id"
+          %(`#{field}`="#{attributes[field]}")
+        end
+        fields_fragment.shift
+        str << fields_fragment.join(", ")
+        str << ";"
       end
     end
   end
