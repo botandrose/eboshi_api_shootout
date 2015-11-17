@@ -11,7 +11,7 @@ class DBModel::Base
   end
 
   def self.fields
-    @@fields ||= [] of Symbol
+    @@fields ||= [] of String
   end
 
   def self.table_name
@@ -23,10 +23,14 @@ class DBModel::Base
   end
 
   macro attribute(field, type)
-    fields.push :{{field}}
+    fields.push "{{field}}"
 
     def {{field}}
-      @attributes[:{{field}}] as {{type}}
+      @attributes["{{field}}"] as {{type}}
+    end
+
+    def {{field}}= value : {{type}}
+      @attributes["{{field}}"] = value
     end
   end
 end

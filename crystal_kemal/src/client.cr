@@ -3,7 +3,7 @@ require "./db_model"
 class Client < DBModel::Base
   self.table_name = "clients"
 
-  attribute id, Int32
+  attribute id, Number
   attribute name, String
   attribute address, String
   attribute city, String

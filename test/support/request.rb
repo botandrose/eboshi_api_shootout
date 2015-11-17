@@ -35,6 +35,8 @@ class Request < Struct.new(:method, :url, :data, :headers)
 
   def json_body
     JSON.load(response.body)
+  rescue JSON::ParserError
+    response.body
   end
 end
 
