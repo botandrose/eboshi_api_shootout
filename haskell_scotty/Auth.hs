@@ -14,6 +14,14 @@ import Data.Text.Lazy
 import Encryption
 import Web.JWT hiding (decode)
 import Data.Maybe
+import System.Environment (lookupEnv)
+
+getKey :: IO Text
+getKey = do
+  keyMaybe <- lookupEnv "EBOSHI_API_KEY"
+  case keyMaybe of
+    Just k -> return $ pack k
+    Nothing -> error "eboshi: EBOSHI_API_KEY not set"
 
 authenticateAccount :: Auth -> IO (Maybe Auth)
 authenticateAccount auth = do
