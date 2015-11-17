@@ -17,19 +17,18 @@ class Client < DBModel::Base
   attribute updated_at, Time
 
   def self.create attributes
-    connection.query %(
-      INSERT INTO #{table_name} SET
-        name="Bot and Rose Design",
-        address="625 NW Everett St",
-        city="Portland",
-        state="OR",
-        zip="97209",
-        country="USA",
-        email="info@botandrose.com",
-        contact="Michael Gubitosa",
-        phone="(503) 662-2712",
-        created_at="2006-06-25T14:08:31",
-        updated_at="2015-08-29T09:58:23";)
+    query = String.build do |str|
+      str << "INSERT INTO #{table_name} SET "
+      fields_fragment = fields.map do |field|
+        next if field == "id"
+        %(`#{field}`="#{attributes[field]}")
+      end
+      fields_fragment.shift
+      str << fields_fragment.join(", ")
+      str << ";"
+    end
+
+    connection.query query
     id = connection.insert_id as UInt64
     find id
   end
