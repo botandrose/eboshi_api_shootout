@@ -5,7 +5,17 @@ module DBModel
     end
 
     def all
-      connection.query("SELECT * FROM #{table_name}").not_nil!.map do |row|
+      results = connection.query("SELECT * FROM #{table_name}")
+      materialize_results(results)
+    end
+
+    def find id
+      results = connection.query("SELECT * FROM #{table_name} WHERE id=#{id}")
+      materialize_results(results).first
+    end
+
+    private def materialize_results results
+      results.not_nil!.map do |row|
         attributes = {} of String => MySQL::Types::SqlType
         row.not_nil!.size.times do |index|
           attributes[fields[index]] = row[index]

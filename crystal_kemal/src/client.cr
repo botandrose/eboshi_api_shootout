@@ -33,16 +33,5 @@ class Client < DBModel::Base
     id = connection.insert_id as UInt64
     find id
   end
-
-  def self.find id
-    results = connection.query("SELECT * FROM #{table_name} WHERE id=#{id}")
-    results.not_nil!.map do |row|
-      attributes = {} of String => MySQL::Types::SqlType
-      row.not_nil!.size.times do |index|
-        attributes[fields[index]] = row[index]
-      end
-      new attributes
-    end.first
-  end
 end
 
