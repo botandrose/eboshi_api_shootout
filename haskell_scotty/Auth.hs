@@ -18,10 +18,11 @@ import System.Environment (lookupEnv)
 
 getKey :: IO Text
 getKey = do
-  keyMaybe <- lookupEnv "EBOSHI_API_KEY"
+  let keyVar = "EBOSHI_API_SHOOTOUT_API_KEY" in
+  keyMaybe <- lookupEnv keyVar
   case keyMaybe of
     Just k -> return $ pack k
-    Nothing -> error "eboshi: EBOSHI_API_KEY not set"
+    Nothing -> error $ "eboshi: " ++ keyVar ++ " not set"
 
 authenticateAccount :: Auth -> IO (Maybe Auth)
 authenticateAccount auth = do
