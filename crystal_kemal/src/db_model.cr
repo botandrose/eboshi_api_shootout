@@ -28,6 +28,10 @@ class DBModel::Base
     def {{field}}
       @attributes["{{field}}"] as {{type}}
     end
+
+    def {{field}}= value : {{type}}
+      @attributes["{{field}}"] = value
+    end
   end
 end
 
