@@ -14,15 +14,12 @@ import Data.Text.Lazy
 import Encryption
 import Web.JWT hiding (decode)
 import Data.Maybe
-import System.Environment (lookupEnv)
+import Control.Monad
+import System.Random
 
 getKey :: IO Text
 getKey = do
-  let keyVar = "EBOSHI_API_SHOOTOUT_API_KEY" in
-  keyMaybe <- lookupEnv keyVar
-  case keyMaybe of
-    Just k -> return $ pack k
-    Nothing -> error $ "eboshi: " ++ keyVar ++ " not set"
+  liftM (pack . Prelude.take 64 . randomRs ('a','z')) newStdGen
 
 authenticateAccount :: Auth -> IO (Maybe Auth)
 authenticateAccount auth = do
