@@ -10,6 +10,10 @@ class Request < Struct.new(:method, :url, :data, :headers)
     new(:post, url, data, headers).tap(&:call)
   end
 
+  def self.patch url, data=nil, headers={}
+    new(:patch, url, data, headers).tap(&:call)
+  end
+
   def self.delete url, headers={}
     new(:delete, url, nil, headers).tap(&:call)
   end

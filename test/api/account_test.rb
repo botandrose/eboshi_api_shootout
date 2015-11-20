@@ -6,8 +6,6 @@ describe "account API" do
     db.clean
   end
 
-  ISO_8601_PATTERN = /\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\Z/
-
   describe "POST /api/account" do
     before do
       skip_if_impl_in %w(clojure_liberator crystal_kemal elixir_phoenix node_express node_hapi python_flask ruby_sinatra)

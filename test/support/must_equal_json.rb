@@ -1,5 +1,9 @@
 module MustEqualJson
   def self.compare a, b
+    if b.is_a?(Class)
+      return a.must_be_kind_of b
+    end
+
     case a
     when Hash
       (a.keys + b.keys.map(&:to_s)).uniq.each do |key|
@@ -9,6 +13,8 @@ module MustEqualJson
       [a.length, b.length].max.times do |index|
         compare a[index], b[index]
       end
+    when Float, NilClass
+      a.must_equal b
     else
       a.must_match b
     end
